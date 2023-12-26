@@ -1,37 +1,61 @@
 import ProjectDescription
-import ProjectDescriptionHelpers
 
 // MARK: - Project
 
-let scripts: [TargetScript] = [
-	Constants.swiftLintTargetScript
+private let organization = "0ver[oder$"
+private let projectName = "MdEditor"
+
+private var bundleId: String {
+	"com.overcoders.\(projectName)"
+}
+
+private var swiftLintTargetScript: TargetScript {
+	let swiftLintScriptString = """
+		export PATH="$PATH:/opt/homebrew/bin"
+		if which swiftlint > /dev/null; then
+		  swiftlint
+		else
+		  echo "warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint"
+		  exit 1
+		fi
+		"""
+
+	return TargetScript.pre(
+		script: swiftLintScriptString,
+		name: "Run SwiftLint",
+		basedOnDependencyAnalysis: false
+	)
+}
+
+private let scripts: [TargetScript] = [
+	swiftLintTargetScript
 ]
 
 let project = Project(
-	name: Constants.projectName,
-	organizationName: Constants.organization,
+	name: projectName,
+	organizationName: organization,
 	targets: [
 		Target(
-			name: Constants.projectName,
+			name: projectName,
 			destinations: .iOS,
 			product: .app,
-			bundleId: Constants.bundleId,
+			bundleId: bundleId,
 			deploymentTargets: .iOS("16.0"),
-			infoPlist: .extendingDefault(with: Constants.extendedInfoPlist),
-			sources: ["Targets/\(Constants.projectName)/**"],
-			resources: ["Targets/\(Constants.projectName)/Resources/**"],
+			infoPlist: "Targets/\(projectName)/Environments/Info.plist",
+			sources: ["Targets/\(projectName)/**"],
+			resources: ["Targets/\(projectName)/Resources/**"],
 			scripts: scripts
 		),
 		Target(
-			name: "\(Constants.projectName)Tests",
+			name: "\(projectName)Tests",
 			destinations: .iOS,
 			product: .unitTests,
-			bundleId: "\(Constants.bundleId)Tests",
+			bundleId: "\(bundleId)Tests",
 			deploymentTargets: .iOS("16.0"),
-			infoPlist: .default,
-			sources: ["Targets/\(Constants.projectName)Tests/**"],
+			infoPlist: "Targets/\(projectName)Tests/Environments/Tests-Info.plist",
+			sources: ["Targets/\(projectName)Tests/**"],
 			dependencies: [
-				.target(name: "\(Constants.projectName)")
+				.target(name: "\(projectName)")
 			])
 	]
 )
