@@ -2,11 +2,11 @@ import ProjectDescription
 
 // MARK: - Project
 
-private let organization = "0ver[oder$"
+private let organization = "Encoded Team"
 private let projectName = "MdEditor"
 
 private var bundleId: String {
-	"com.overcoders.\(projectName)"
+	"com.encoders.\(projectName)"
 }
 
 private var swiftLintTargetScript: TargetScript {
