@@ -1,0 +1,24 @@
+name: DataStructuresPackage
+
+on:
+  push:
+    branches:
+      - 'MDED-4-SPM-DataStructuresPackage'
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  build:
+    name: Test DataStructuresPackage
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build
+        run: |
+          cd Packages/DataStructuresPackage
+          swift build -v
+      - name: Run tests
+        run: | 
+          cd Packages/DataStructuresPackage
+          swift test -v
