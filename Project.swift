@@ -2,7 +2,7 @@ import ProjectDescription
 
 // MARK: - Project
 
-private let organization = "Encoded Team"
+private let organization = "EncodedTeam"
 private let projectName = "MdEditor"
 
 private var bundleId: String {
