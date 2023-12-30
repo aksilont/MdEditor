@@ -3,7 +3,7 @@ name: TaskManagerPackage
 on:
   push:
     branches:
-      - 'MDED-2-SPM-TaskManagerPackage'
+      - 'union-project'
   pull_request:
     branches:
       - develop

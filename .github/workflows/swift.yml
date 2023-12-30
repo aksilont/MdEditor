@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - 'union-project'
-      
   pull_request:
     branches: 
       - 'develop'
@@ -18,21 +17,3 @@ jobs:
       - uses: jdx/rtx-action@v1
       - name: Run Testing
         run: exec ./.github/MdEditor.sh
-
-  Test_TaskManagerPackage:
-    name: Test TaskManagerPackage
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: jdx/rtx-action@v1
-      - name: Run Testing
-        run: exec ./.github/TaskManagerPackage.sh
-
-  Test_DataStructuresPackage:
-    name: Test DataStructuresPackage
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: jdx/rtx-action@v1
-      - name: Run Testing
-        run: exec ./.github/DataStructuresPackage.sh

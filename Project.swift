@@ -35,10 +35,8 @@ let project = Project(
 	name: projectName,
 	organizationName: organization,
 	packages: [
-//		.local(path: .relativeToManifest("Packages/TaskManagerPackage")),
-//		.local(path: .relativeToManifest("Packages/DataStructuresPackage")),
-		.package(path: .relativeToManifest("Packages/TaskManagerPackage")),
-		.package(path: .relativeToManifest("Packages/DataStructuresPackage"))
+		.local(path: .relativeToManifest("Packages/TaskManagerPackage")),
+		.local(path: .relativeToManifest("Packages/DataStructuresPackage"))
 	],
 	targets: [
 		Target(
@@ -47,9 +45,9 @@ let project = Project(
 			product: .app,
 			bundleId: bundleId,
 			deploymentTargets: .iOS("16.0"),
-			infoPlist: "Targets/\(projectName)/Environments/Info.plist",
-			sources: ["Targets/\(projectName)/**"],
-			resources: ["Targets/\(projectName)/Resources/**"],
+			infoPlist: "Environments/Info.plist",
+			sources: ["Sources/**"],
+			resources: ["Resources/**"],
 			scripts: scripts,
 			dependencies: [
 				.package(product: "TaskManagerPackage", type: .runtime),
@@ -62,10 +60,12 @@ let project = Project(
 			product: .unitTests,
 			bundleId: "\(bundleId)Tests",
 			deploymentTargets: .iOS("16.0"),
-			infoPlist: "Targets/\(projectName)Tests/Environments/Tests-Info.plist",
-			sources: ["Targets/\(projectName)Tests/**"],
+			infoPlist: .none,
+			sources: ["Tests/**"],
 			dependencies: [
 				.target(name: "\(projectName)")
-			])
+			],
+			settings: .settings(base: ["GENERATE_INFOPLIST_FILE": "YES"])
+		)
 	]
 )
