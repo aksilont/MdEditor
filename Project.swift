@@ -35,8 +35,10 @@ let project = Project(
 	name: projectName,
 	organizationName: organization,
 	packages: [
-		.local(path: .relativeToManifest("TaskManagerPackage")),
-		.local(path: .relativeToManifest("DataStructuresPackage"))
+//		.local(path: .relativeToManifest("Packages/TaskManagerPackage")),
+//		.local(path: .relativeToManifest("Packages/DataStructuresPackage")),
+		.package(path: .relativeToManifest("Packages/TaskManagerPackage")),
+		.package(path: .relativeToManifest("Packages/DataStructuresPackage"))
 	],
 	targets: [
 		Target(
