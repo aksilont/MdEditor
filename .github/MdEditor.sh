@@ -1,4 +1,3 @@
-tuist fetch
 tuist generate
 xcodebuild clean -quiet
 xcodebuild test \
