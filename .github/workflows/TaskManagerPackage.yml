@@ -3,7 +3,7 @@ name: TaskManagerPackage
 on:
   push:
     branches:
-      - 'develop'
+      - 'MDED-2-SPM-TaskManagerPackage'
   pull_request:
     branches:
       - develop
@@ -16,9 +16,9 @@ jobs:
       - uses: actions/checkout@v3
       - name: Build
         run: |
-          cd Packages/DataStructuresPackage
+          cd Packages/TaskManagerPackage
           swift build -v
       - name: Run tests
         run: | 
-          cd Packages/DataStructuresPackage
+          cd Packages/TaskManagerPackage
           swift test -v
