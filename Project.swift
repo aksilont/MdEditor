@@ -34,12 +34,6 @@ private let scripts: [TargetScript] = [
 let project = Project(
 	name: projectName,
 	organizationName: organization,
-	packages: [
-//		.local(path: .relativeToManifest("Packages/TaskManagerPackage")),
-//		.local(path: .relativeToManifest("Packages/DataStructuresPackage")),
-		.package(path: .relativeToManifest("Packages/TaskManagerPackage")),
-		.package(path: .relativeToManifest("Packages/DataStructuresPackage"))
-	],
 	targets: [
 		Target(
 			name: projectName,
@@ -52,8 +46,8 @@ let project = Project(
 			resources: ["Targets/\(projectName)/Resources/**"],
 			scripts: scripts,
 			dependencies: [
-				.package(product: "TaskManagerPackage", type: .runtime),
-				.package(product: "DataStructuresPackage", type: .runtime)
+				.external(name: "TaskManagerPackage"),
+				.external(name: "DataStructuresPackage")
 			]
 		),
 		Target(
