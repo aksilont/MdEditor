@@ -1,7 +1,7 @@
 name: MdEditor
 
 on:
-  pull_request:
+  push:
     branches: 
       - develop
 
@@ -11,6 +11,12 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: jdx/rtx-action@v1
+      # - name: Mise Install
+      #   run: |
+      #     curl https://mise.jdx.dev/install.sh | sh
+      #     echo "$HOME/.local/bin/mise" >> $GITHUB_PATH
+      #     echo "eval \"\$(/Users/runner/.local/bin/mise activate bash)\"" >> ~/.bashrc
+      #     reset
+      - uses: jdx/mise-action@v2
       - name: Build
         run: exec ./.github/build.sh

@@ -34,6 +34,14 @@ private let scripts: [TargetScript] = [
 let project = Project(
 	name: projectName,
 	organizationName: organization,
+	options: Project.Options.options(
+		disableBundleAccessors: true,
+		disableSynthesizedResourceAccessors: true
+	),
+	packages: [
+		.local(path: .relativeToManifest("Packages/TaskManagerPackage")),
+		.local(path: .relativeToManifest("Packages/DataStructuresPackage"))
+	],
 	targets: [
 		Target(
 			name: projectName,
@@ -41,10 +49,14 @@ let project = Project(
 			product: .app,
 			bundleId: bundleId,
 			deploymentTargets: .iOS("16.0"),
-			infoPlist: "Targets/\(projectName)/Environments/Info.plist",
-			sources: ["Targets/\(projectName)/**"],
-			resources: ["Targets/\(projectName)/Resources/**"],
-			scripts: scripts
+			infoPlist: "Environments/Info.plist",
+			sources: ["Sources/**"],
+			resources: ["Resources/**"],
+			scripts: scripts,
+			dependencies: [
+				.package(product: "TaskManagerPackage", type: .runtime),
+				.package(product: "DataStructuresPackage", type: .runtime)
+			]
 		),
 		Target(
 			name: "\(projectName)Tests",
@@ -52,10 +64,12 @@ let project = Project(
 			product: .unitTests,
 			bundleId: "\(bundleId)Tests",
 			deploymentTargets: .iOS("16.0"),
-			infoPlist: "Targets/\(projectName)Tests/Environments/Tests-Info.plist",
-			sources: ["Targets/\(projectName)Tests/**"],
+			infoPlist: .none,
+			sources: ["Tests/**"],
 			dependencies: [
 				.target(name: "\(projectName)")
-			])
+			],
+			settings: .settings(base: ["GENERATE_INFOPLIST_FILE": "YES"])
+		)
 	]
 )
