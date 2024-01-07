@@ -39,8 +39,8 @@ let project = Project(
 		disableSynthesizedResourceAccessors: true
 	),
 	packages: [
-		.local(path: .relativeToManifest("Packages/TaskManagerPackage")),
-		.local(path: .relativeToManifest("Packages/DataStructuresPackage"))
+		.local(path: .relativeToManifest("../Packages/TaskManagerPackage")),
+		.local(path: .relativeToManifest("../Packages/DataStructuresPackage"))
 	],
 	targets: [
 		Target(
