@@ -2,8 +2,8 @@ name: TaskManagerPackage
 
 on:
   push:
-    branches:
-      - 'MDED-7-add-spm-to-project'
+    branches: 
+      - develop
   pull_request:
     branches:
       - develop
