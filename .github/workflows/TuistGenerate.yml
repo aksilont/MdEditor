@@ -1,0 +1,16 @@
+name: Tuist Generate
+
+on:
+  push:
+    branches: 
+      - 'develop'
+
+jobs:
+  generate:
+    name: Tuist Generate
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: jdx/mise-action@v2
+      - name: Generate
+        run: exec ./.github/tuistGenerate.sh

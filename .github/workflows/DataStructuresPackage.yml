@@ -1,9 +1,6 @@
 name: DataStructuresPackage
 
 on:
-  push:
-    branches:
-      - 'MDED-7-add-spm-to-project'
   pull_request:
     branches:
       - develop

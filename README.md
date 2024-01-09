@@ -10,7 +10,7 @@
 **Шаги действий:**
 ```sh
 git clone git@github.com:EncodedTeam/MdEditor.git
-cd MdEditor
+cd MdEditor/App
 tuist generate
 ```
 

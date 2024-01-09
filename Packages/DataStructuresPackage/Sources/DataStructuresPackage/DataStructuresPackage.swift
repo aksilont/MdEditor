@@ -4,28 +4,30 @@ import Foundation
 public struct DoublyLinkedList<T> {
 
 	/// Узел линейного двунаправленного списка
-	public class Node<T> {
+	public class Node {
 		/// Значение, которое хранит узел
 		public var value: T
 
 		/// Ссылка на следующий узел, если он есть
-		public var next: Node<T>?
+		public var next: Node?
 
 		/// Ссылка на предыдущий узел, если он есть
-		public var previous: Node<T>?
+		public var previous: Node?
 
 		/// Инициализатор узла линейного однонаправленного списка.
 		/// - Parameters:
 		///  - value: Значение для хранения в узле;
 		///  - next:  Ссылка на следующий узел, если он есть;
 		///  - previous:  Ссылка на предыдущий узел, если он есть.
-		public init(_ value: T, previous: Node<T>? = nil, next: Node<T>? = nil) {
+		public init(_ value: T, previous: Node? = nil, next: Node? = nil) {
 			self.value = value
+			self.next = next
+			self.previous = previous
 		}
 	}
 
-	private var head: Node<T>?
-	private var tail: Node<T>?
+	private var head: Node?
+	private var tail: Node?
 
 	/// Возвращает количество элементов списка.
 	///
@@ -50,7 +52,7 @@ public struct DoublyLinkedList<T> {
 		}
 	}
 
-	/// Добавлние в начало списка значения.
+	/// Добавлeние в начало списка значения.
 	///
 	/// Сложность O(1).
 	/// - Parameter value: Значение, которое будет добавлено в список.
@@ -73,7 +75,7 @@ public struct DoublyLinkedList<T> {
 	public mutating func append(_ value: T) {
 		let newNode = Node(value, previous: tail)
 
-		tail?.next =  newNode
+		tail?.next = newNode
 		tail = newNode
 
 		if head == nil {
@@ -93,7 +95,7 @@ public struct DoublyLinkedList<T> {
 		let nextNode = currentNode.next
 		let newNode = Node(value, previous: currentNode, next: nextNode)
 		currentNode.next = newNode
-		newNode.previous = newNode
+		nextNode?.previous = newNode
 
 		if newNode.next == nil {
 			tail = newNode
@@ -105,12 +107,12 @@ public struct DoublyLinkedList<T> {
 	/// Извлечение значения из начала строки.
 	///
 	/// Сложность O(1).
-	/// - Returns: Извлеченное изсписка значение.
+	/// - Returns: Извлеченное из списка значение.
 	public mutating func pop() -> T? {
 		guard let currentHead = head else { return nil }
 		head = currentHead.next
 		head?.previous = nil
-		if isEmpty { tail = nil }
+		if head == nil { tail = nil }
 
 		count -= 1
 
@@ -125,7 +127,7 @@ public struct DoublyLinkedList<T> {
 		guard let currentTail = tail else { return nil }
 		tail = currentTail.previous
 		tail?.next = nil
-		if isEmpty { head = nil }
+		if tail == nil { head = nil }
 		count -= 1
 
 		return currentTail.value
@@ -154,13 +156,20 @@ public struct DoublyLinkedList<T> {
 		node(at: index)?.value
 	}
 
-	private func node(at index: Int) -> Node<T>? {
+	private func node(at index: Int) -> Node? {
 		guard index >= 0 && index < count else { return nil }
 		var currentIndex = 0
-		var currentNode: Node<T>?
+		var currentNode: Node?
 		if index <= count / 2 {
 			currentNode = head
 			while currentIndex < index {
+				currentNode = currentNode?.next
+				currentIndex += 1
+			}
+		} else {
+			currentIndex = count - 1
+			currentNode = tail
+			while currentIndex > index {
 				currentNode = currentNode?.previous
 				currentIndex -= 1
 			}
