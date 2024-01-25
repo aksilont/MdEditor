@@ -1,4 +1,4 @@
-name: MdEditor
+name: MdEditor UI Test
 
 on:
   push:
@@ -7,10 +7,10 @@ on:
 
 jobs:
   build:
-    name: MdEditor
+    name: MdEditor UI Test
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v4
       - uses: jdx/mise-action@v2
       - name: Testing
-        run: exec ./.github/MdEditor.sh
+        run: exec ./.github/MdEditorUITest.sh
