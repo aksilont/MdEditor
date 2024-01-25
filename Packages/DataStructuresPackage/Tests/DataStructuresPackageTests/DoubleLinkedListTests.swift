@@ -22,23 +22,24 @@ final class DoublyLinkedListTests: XCTestCase {
 		super.tearDown()
 	}
 
-	/// Тест инициализатора, проверяющий, что голова и хвост указывают на один и тот же узел
+	/// Тест инициализатора со значением в списке
 	func test_initWithValue_shouldBeEqual() {
 		let value = 16
 		sut = DoublyLinkedList(value: value)
-
 		XCTAssertEqual(sut.value(at: 0), value, "Значения не равны" )
+		XCTAssertEqual(sut.headValue, sut.tailValue, "Значение головы не равно значению в хвосте")
 	}
 
-	/// Тест свойства определяющего, пуст ли список.
-	func test_isEmpty_shouldBeTrue() {
-		XCTAssertTrue(sut.isEmpty, "Список содержит значения")
+	/// Тест инициализатора с пустым список
+	func test_initWithoutValue_shouldBeCorrect() {
+		XCTAssertTrue(sut.isEmpty, "Список должен быть пустым")
+		XCTAssertEqual(sut.count, 0, "Count не равен 0")
 	}
 
 	func test_isEmpty_shouldBeFalse() {
 		sut.push(1)
 		
-		XCTAssertFalse(sut.isEmpty, "Список не содержит значения")
+		XCTAssertFalse(sut.isEmpty, "Список должен содержать значения")
 	}
 	
 	/// Тест добавления в начало списка значения.
@@ -75,7 +76,7 @@ final class DoublyLinkedListTests: XCTestCase {
 		previosCount = sut.count
 		sut.insert(3, after: 5)
 
-		XCTAssertEqual(previosCount, sut.count, "Счетчик изменился")
+		XCTAssertEqual(previosCount, sut.count, "Ожидалось, что count не изменится")
 	}
 
 	func test_insert_countShouldBeCorrect() {
@@ -109,7 +110,7 @@ final class DoublyLinkedListTests: XCTestCase {
 	func test_popWithEmptyList_resultShouldBeNil() {
 		let value = sut.pop()
 
-		XCTAssertNil(value, "Извлеченное значение не nil")
+		XCTAssertNil(value, "Ожидалось nil")
 	}
 
 	func test_pop_resultShouldBeTrue() {
@@ -170,13 +171,13 @@ final class DoublyLinkedListTests: XCTestCase {
 		
 		let _ = sut.remove(after: 0)
 		
-		XCTAssertEqual(sut.count, 1, "Элемент не удален из списка")
+		XCTAssertEqual(sut.count, 1, "Count ожидался уменьшиться")
 	}
 
 	func test_removeWithEmptyList_resultShouldBeNil() {
 		let value = sut.remove(after: 2)
 
-		XCTAssertNil(value, "Извлеченное значение не равно nil")
+		XCTAssertNil(value, "Извлеченное значение ожидалось nil")
 	}
 
 	/// Тест получения значения по индексу.

@@ -198,6 +198,16 @@ extension DoublyLinkedList: CustomStringConvertible {
 	}
 }
 
+extension DoublyLinkedList {
+	var headValue: T? {
+		head?.value
+	}
+
+	var tailValue: T? {
+		tail?.value
+	}
+}
+
 /// Очередь на основе линейного двунаправленнго списка.
 public struct Queue<T> {
 	private var elements: DoublyLinkedList<T>

@@ -24,13 +24,13 @@ final class QueueTests: XCTestCase {
 	
 	/// Тест свойства определяющего, пуста ли очередь.
 	func test_isEmpty_shouldBeTrue() {
-		XCTAssertTrue(sut.isEmpty, "Очередь содержит значения")
+		XCTAssertTrue(sut.isEmpty, "Очередь не должна содержать значения")
 	}
 	
 	func test_isEmpty_shouldBeFalse() {
 		sut.enqueue(1)
 		
-		XCTAssertFalse(sut.isEmpty, "Очередь не содержит значения")
+		XCTAssertFalse(sut.isEmpty, "Очередь не должна быть пустой")
 	}
 	
 	/// Тест свойства определяющего, количество элементов.

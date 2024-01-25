@@ -11,19 +11,20 @@ import XCTest
 final class RegularTaskTests: XCTestCase {
 
 	func test_initialization_titleIsSet_shouldHaveCorrectTitle() {
-		let sut = makeSut()
+		let sut = RegularTask(title: taskTitle, completed: true)
 
 		XCTAssertEqual(sut.title, "RegularTask", "Неверно установлен title (Наименование задания).")
+		XCTAssertTrue(sut.completed, "Задание ожидалось создаться выполненным")
 	}
 
 	func test_initialization_propertyCompletedShouldBeFalse() {
-		let sut = makeSut()
+		let sut = RegularTask(title: taskTitle)
 
 		XCTAssertFalse(sut.completed, "Неверно установлено свойство completed (Состояние задания).")
 	}
 
 	func test_togglePropertyCompleted_propertyCompletedShouldBeTrue() {
-		let sut = makeSut()
+		let sut = RegularTask(title: taskTitle)
 
 		sut.completed.toggle()
 
@@ -33,9 +34,8 @@ final class RegularTaskTests: XCTestCase {
 }
 
 // MARK: - TestData
-
 private extension RegularTaskTests {
-	func makeSut() -> RegularTask {
-		RegularTask(title: "RegularTask")
+	var taskTitle: String {
+		"RegularTask"
 	}
 }

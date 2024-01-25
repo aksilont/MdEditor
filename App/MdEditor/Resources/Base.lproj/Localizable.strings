@@ -1,0 +1,34 @@
+//
+//  MdEditor.Localizable (en)
+//
+
+// MARK: - Common strings
+"Yes.text" = "Yes";
+"No.text" = "No";
+"Return.text" = "Return";
+"Ok.text" = "Ok";
+"Error.text" = "Error";
+
+// MARK: - LoginError strings
+"LoginError.wrongPassword" = "Wrong password.";
+"LoginError.wrongLogin" = "Wrong login.";
+"LoginError.emptyFields" = "Empty fields.";
+"LoginError.errorAuth" = "Wrong password and login.";
+
+// MARK: - Login strings
+"Login.title" = "Authorization";
+"Login.buttonTitle" = "Login";
+"Login.passPlaceholder" = "Password";
+"Login.loginPlaceholder" = "Login";
+
+// MARK: - TodoList strings
+"TodoList.title" = "TodoList";
+"TodoList.deadline" = "Deadline";
+"TodoList.Section.uncompleted" = "Uncompleted";
+"TodoList.Section.completed" = "Completed";
+"TodoList.Section.all" = "All";
+"TodoList.Section.important" = "Important";
+"TodoList.Section.regular" = "Regular";
+"TodoList.TaskPriority.high" = "!!!";
+"TodoList.TaskPriority.medium" = "!!";
+"TodoList.TaskPriority.low" = "!";

@@ -11,69 +11,45 @@ import XCTest
 final class OrderedTaskManagerTests: XCTestCase {
 
 	private var sut: ITaskManager!
-	private var taskManager: ITaskManager!
-	private var tasks: [Task]!
-	private var importantTaskWithHighPriority: Task!
 
 	override func setUp() {
 		super.setUp()
-
-		importantTaskWithHighPriority = ImportantTask(title: "Do homework", taskPriority: .high)
-		tasks = [
-			RegularTask(title: "Do Workout", completed: true),
-			importantTaskWithHighPriority,
-			ImportantTask(title: "Write new tasks", taskPriority: .low),
-			RegularTask(title: "Solve 3 algorithms"),
-			ImportantTask(title: "Go shopping", taskPriority: .medium),
-		]
-		taskManager = TaskManager(taskList: tasks)
-		sut = OrderedTaskManager(taskManager: taskManager)
-	}
-
-	override func tearDown(){
-		tasks = nil
-		taskManager = nil
-		sut = nil
-		importantTaskWithHighPriority = nil
-
-		super.tearDown()
+		sut = makeSUT()
 	}
 
 	func test_allTasks_shouldBe5TasksOrderedByPriority() {
-		let allTasks = sut.allTasks()
+		let allTasks = TasksStub.orderedAllTasks
 
-		XCTAssertFalse(allTasks.isEmpty, "Список заданий пуст.")
-		XCTAssertEqual(allTasks.count, 5, "Список заданий содержит больше/меньше 5 заданий.")
+		XCTAssertFalse(allTasks.isEmpty, "Список не должен быть пуст.")
+		XCTAssertEqual(allTasks.count, 5, "Список заданий должен содержать 5 заданий")
 		XCTAssertEqual(
 			sut.allTasks(),
-			sorted(tasks: taskManager.allTasks()),
-			"Задания в списке не отсортированы по приоритету."
+			allTasks,
+			"Задания в списке должны быть отсортированы по приоритету."
 		)
 	}
 
-	func test_completedTasks_shouldBeCompletedTasksOrderedByPriority() {
-		importantTaskWithHighPriority.completed = true
-
+	func test_completedTasks_shouldBe2CompletedTasksOrderedByPriority() {
 		let completedTasks = sut.completedTasks()
 
-		XCTAssertFalse(completedTasks.isEmpty, "Список заданий пуст.")
-		XCTAssertEqual(completedTasks.count, 2, "Список заданий содержит больше/меньше 2 заданий.")
+		XCTAssertFalse(completedTasks.isEmpty, "Список не должен быть пуст.")
+		XCTAssertEqual(completedTasks.count, 2, "Список заданий должен содержать 2 задания.")
 		XCTAssertEqual(
 			sut.completedTasks(),
-			sorted(tasks: taskManager.completedTasks()),
-			"Выполненные задания в списке не отсортированы по приоритету."
+			TasksStub.orderedCompletedTasks,
+			"Выполненные задания в списке должны быть отсортированы по приоритету."
 		)
 	}
 
-	func test_uncompletedTasks_shouldBeUncompletedTasksOrderedByPriority() {
+	func test_uncompletedTasks_shouldBe3UncompletedTasksOrderedByPriority() {
 		let uncompletedTasks = sut.uncompletedTasks()
 
-		XCTAssertFalse(uncompletedTasks.isEmpty, "Список заданий пуст.")
-		XCTAssertEqual(uncompletedTasks.count, 4, "Список заданий содержит больше/меньше 4 заданий.")
+		XCTAssertFalse(uncompletedTasks.isEmpty, "Список заданий не должен быть пуст.")
+		XCTAssertEqual(uncompletedTasks.count, 3, "Список заданий должен содержать 4 задания.")
 		XCTAssertEqual(
 			sut.uncompletedTasks(),
-			sorted(tasks: taskManager.uncompletedTasks()),
-			"Задания для выполнения в списке не отсортированы по приоритету."
+			TasksStub.orderedUncompletedTasks,
+			"Задания для выполнения в списке должны быть отсортированы по приоритету."
 		)
 	}
 
@@ -92,5 +68,34 @@ private extension OrderedTaskManagerTests {
 			}
 			return false
 		}
+	}
+}
+
+private extension OrderedTaskManagerTests {
+	enum TasksStub {
+		static let orderedAllTasks = [
+			MockTaskManager.highImportantTask,
+			MockTaskManager.mediumImportantTask,
+			MockTaskManager.lowImportantTask,
+			MockTaskManager.completedRegularTask,
+			MockTaskManager.uncompletedRegularTask
+		]
+
+		static let orderedCompletedTasks = [
+			MockTaskManager.mediumImportantTask,
+			MockTaskManager.completedRegularTask
+		]
+
+		static let orderedUncompletedTasks = [
+			MockTaskManager.highImportantTask,
+			MockTaskManager.lowImportantTask,
+			MockTaskManager.uncompletedRegularTask
+		]
+	}
+
+	func makeSUT() -> OrderedTaskManager {
+		let mockTaskManager = MockTaskManager()
+		let sut = OrderedTaskManager(taskManager: mockTaskManager)
+		return sut
 	}
 }

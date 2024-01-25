@@ -10,7 +10,7 @@ jobs:
     name: Build MdEditor
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: jdx/mise-action@v2
       - name: Build
         run: exec ./.github/build.sh

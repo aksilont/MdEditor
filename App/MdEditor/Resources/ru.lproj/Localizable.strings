@@ -1,0 +1,35 @@
+//
+//  MdEditor.Localizable (ru)
+//
+
+// MARK: - Common strings
+"Yes.text" = "Да";
+"No.text" = "Нет";
+"Return.text" = "Вернуться";
+"Ok.text" = "Ок";
+"Error.text" = "Ошибка";
+
+// MARK: - LoginError strings
+"LoginError.wrongPassword" = "Неверный пароль.";
+"LoginError.wrongLogin" = "Неверный логин.";
+"LoginError.emptyFields" = "Пустые поля логин или пароль.";
+"LoginError.errorAuth" = "Неверный пароль и логин.";
+
+// MARK: - Login strings
+"Login.title" = "Авторизация";
+"Login.buttonTitle" = "Логин";
+"Login.passPlaceholder" = "Пароль";
+"Login.loginPlaceholder" = "Логин";
+
+// MARK: - TodoList strings
+"TodoList.title" = "Список задач";
+"TodoList.deadline" = "Крайний срок до";
+"TodoList.dateFormat" = "dd MMMM YYYY г.";
+"TodoList.Section.uncompleted" = "Невыполненные";
+"TodoList.Section.completed" = "Выполненные";
+"TodoList.Section.all" = "Все";
+"TodoList.Section.important" = "Важные";
+"TodoList.Section.regular" = "Обычные";
+"TodoList.TaskPriority.high" = "!!!";
+"TodoList.TaskPriority.medium" = "!!";
+"TodoList.TaskPriority.low" = "!";

@@ -132,7 +132,7 @@ final class TaskManagerTests: XCTestCase {
 // MARK: - TestData
 
 private extension TaskManagerTests {
-	func makeSut() -> ITaskManager {
+	func makeSut() -> TaskManager {
 		TaskManager()
 	}
 }
