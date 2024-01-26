@@ -9,8 +9,9 @@ jobs:
   build:
     name: Build
     env:
+      WORKSPACE: MdEditor.xcworkspace
       SCHEME: MdEditor
-      DEVICE: "iPhone 14 Pro"
+      DEVICE: iPhone 14 Pro
       DERIVED_DATA_PATH: DerivedData
     runs-on: macos-latest
     steps:
@@ -23,7 +24,7 @@ jobs:
           cd App
           tuist generate
           xcodebuild clean build-for-testing \
-            -workspace "$SCHEME.xcworkspace" \
+            -workspace $WORKSPACE \
             -scheme $SCHEME \
             -destination "platform=iOS Simulator,name=$DEVICE" \
             -derivedDataPath $DERIVED_DATA_PATH | xcpretty --color --simple
@@ -36,7 +37,7 @@ jobs:
   unit_tests:
     name: Unit Tests
     env:
-      DEVICE: "iPhone 14 Pro"
+      DEVICE: iPhone 14 Pro
       DERIVED_DATA_PATH: DerivedData
       TEST_TARGET: MdEditorTests
     runs-on: macos-latest
@@ -59,7 +60,7 @@ jobs:
   ui_tests:
     name: UI Tests
     env:
-      DEVICE: "iPhone 14 Pro"
+      DEVICE: iPhone 14 Pro
       DERIVED_DATA_PATH: DerivedData
       TEST_TARGET: MdEditorUITests
     runs-on: macos-latest
@@ -80,7 +81,7 @@ jobs:
             -only-testing:$TEST_TARGET | xcpretty --color --simple
 
   delete_artifact:
-    name: Delete products
+    name: Delete artifacts
     runs-on: macos-latest
     needs: [build, ui_tests,unit_tests]
     steps:
