@@ -10,7 +10,7 @@ jobs:
     name: Build
     env:
       SCHEME: MdEditor
-      DEVICE: iPhone 14 Pro
+      DEVICE: "iPhone 14 Pro"
       DERIVED_DATA_PATH: DerivedData
     runs-on: macos-latest
     steps:
@@ -24,7 +24,7 @@ jobs:
           tuist generate
           xcodebuild clean build-for-testing \
             -scheme $SCHEME \
-            -destination 'platform=iOS Simulator,name=iPhone 14 Pro' \
+            -destination "platform=iOS Simulator,name=$DEVICE" \
             -derivedDataPath $DERIVED_DATA_PATH | xcpretty --color --simple
       - name: Upload products
         uses: actions/upload-artifact@v4
@@ -35,7 +35,7 @@ jobs:
   unit_tests:
     name: Unit Tests
     env:
-      DEVICE: iPhone 14 Pro
+      DEVICE: "iPhone 14 Pro"
       DERIVED_DATA_PATH: DerivedData
       TEST_TARGET: MdEditorTests
     runs-on: macos-latest
@@ -50,19 +50,19 @@ jobs:
       - name: Testing
         run: |
           xcodebuild test-without-building \
-            -xctestrun $(find . -type f -name '*.xctestrun') \
-            -destination 'platform=iOS Simulator,name=iPhone 14 Pro' \
+            -xctestrun $(find . -type f -name "*.xctestrun") \
+            -destination "platform=iOS Simulator,name=$DEVICE" \
             -derivedDataPath $DERIVED_DATA_PATH \
             -only-testing:$TEST_TARGET | xcpretty --color --simple
 
   ui_tests:
     name: UI Tests
     env:
-      DEVICE: iPhone 14 Pro
+      DEVICE: "iPhone 14 Pro"
       DERIVED_DATA_PATH: DerivedData
       TEST_TARGET: MdEditorUITests
     runs-on: macos-latest
-    needs: build
+    needs: [build, unit_tests]
     steps:
       - name: Checkout project
         uses: actions/checkout@v4
@@ -73,7 +73,7 @@ jobs:
       - name: Testing
         run: |
           xcodebuild test-without-building \
-            -xctestrun $(find . -type f -name '*.xctestrun') \
-            -destination 'platform=iOS Simulator,name=iPhone 14 Pro' \
+            -xctestrun $(find . -type f -name "*.xctestrun") \
+            -destination "platform=iOS Simulator,name=$DEVICE" \
             -derivedDataPath $DERIVED_DATA_PATH \
             -only-testing:$TEST_TARGET | xcpretty --color --simple
