@@ -16,13 +16,14 @@ jobs:
     steps:
       - name: Checkout project
         uses: actions/checkout@v4
-      - name: Mise action
+      - name: Installing tools
         uses: jdx/mise-action@v2
       - name: Build
         run: |
           cd App
           tuist generate
           xcodebuild clean build-for-testing \
+            -workspace "$SCHEME.xcworkspace" \
             -scheme $SCHEME \
             -destination "platform=iOS Simulator,name=$DEVICE" \
             -derivedDataPath $DERIVED_DATA_PATH | xcpretty --color --simple
@@ -77,3 +78,13 @@ jobs:
             -destination "platform=iOS Simulator,name=$DEVICE" \
             -derivedDataPath $DERIVED_DATA_PATH \
             -only-testing:$TEST_TARGET | xcpretty --color --simple
+
+  delete_artifact:
+    name: Delete products
+    runs-on: macos-latest
+    needs: [build, ui_tests,unit_tests]
+    steps:
+      - name: Deleting
+        uses: geekyeggo/delete-artifact@v4
+        with:
+            name: Products
