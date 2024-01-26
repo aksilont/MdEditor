@@ -1,8 +1,5 @@
-cd App/
-tuist generate
-xcodebuild test \
-    -quiet \
-    -workspace 'MdEditor.xcworkspace' \
+xcodebuild test-without-building \
+    -xctestrun $(find . -type f -name '*.xctestrun') \
     -scheme 'MdEditorTests' \
-    -sdk iphonesimulator \
-    -destination 'platform=iOS Simulator,name=iPhone 14 Pro'
+    -destination 'platform=iOS Simulator,name=iPhone 14 Pro' \
+    -derivedDataPath 'DerivedData'
