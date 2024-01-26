@@ -6,29 +6,74 @@ on:
       - develop
 
 jobs:
-  Build:
-    name: Build MdEditor
+  build:
+    name: Build
+    env:
+      SCHEME: MdEditor
+      DEVICE: iPhone 14 Pro
+      DERIVED_DATA_PATH: DerivedData
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: jdx/mise-action@v2
+      - name: Checkout project
+        uses: actions/checkout@v4
+      - name: Mise action
+        uses: jdx/mise-action@v2
       - name: Build
-        run: exec ./.github/MdEditor.sh
-  UnitTests:
-    needs: Build
-    name: MdEditor Unit Tests
+        run: |
+          cd App
+          tuist generate
+          xcodebuild clean build-for-testing \
+            -scheme $SCHEME \
+            -destination 'platform=iOS Simulator,name=iPhone 14 Pro' \
+            -derivedDataPath $DERIVED_DATA_PATH | xcpretty --color --simple
+      - name: Upload products
+        uses: actions/upload-artifact@v4
+        with:
+          name: Products
+          path: App/DerivedData/Build/Products
+  
+  unit_tests:
+    name: Unit Tests
+    env:
+      DEVICE: iPhone 14 Pro
+      DERIVED_DATA_PATH: DerivedData
+      TEST_TARGET: MdEditorTests
     runs-on: macos-latest
+    needs: build
     steps:
-      - uses: actions/checkout@v4
-      - uses: jdx/mise-action@v2
+      - name: Checkout project
+        uses: actions/checkout@v4
+      - name: Download products
+        uses: actions/download-artifact@v4
+        with:
+          name: Products
       - name: Testing
-        run: exec ./.github/MdEditorUnitTests.sh
-  UITests:
-    needs: [Build, UnitTests]
-    name: MdEditor UI Tests
+        run: |
+          xcodebuild test-without-building \
+            -xctestrun $(find . -type f -name '*.xctestrun') \
+            -destination 'platform=iOS Simulator,name=iPhone 14 Pro' \
+            -derivedDataPath $DERIVED_DATA_PATH \
+            -only-testing:$TEST_TARGET | xcpretty --color --simple
+
+  ui_tests:
+    name: UI Tests
+    env:
+      DEVICE: iPhone 14 Pro
+      DERIVED_DATA_PATH: DerivedData
+      TEST_TARGET: MdEditorUITests
     runs-on: macos-latest
+    needs: build
     steps:
-      - uses: actions/checkout@v4
-      - uses: jdx/mise-action@v2
+      - name: Checkout project
+        uses: actions/checkout@v4
+      - name: Download products
+        uses: actions/download-artifact@v4
+        with:
+          name: Products      
       - name: Testing
-        run: exec ./.github/MdEditorUITests.sh
+        run: |
+          xcodebuild test-without-building \
+            -xctestrun $(find . -type f -name '*.xctestrun') \
+            -destination 'platform=iOS Simulator,name=iPhone 14 Pro' \
+            -derivedDataPath $DERIVED_DATA_PATH \
+            -only-testing:$TEST_TARGET | xcpretty --color --simple

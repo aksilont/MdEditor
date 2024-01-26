@@ -95,7 +95,10 @@ let project = Project(
 			name: ProjectSettings.projectName,
 			shared: true,
 			buildAction: .buildAction(targets: ["\(ProjectSettings.projectName)"]),
-			testAction: .targets(["\(ProjectSettings.projectName)Tests"]),
+			testAction: .targets([
+				"\(ProjectSettings.projectName)Tests",
+				"\(ProjectSettings.projectName)UITests"
+			]),
 			runAction: .runAction(executable: "\(ProjectSettings.projectName)")
 		),
 		Scheme(
