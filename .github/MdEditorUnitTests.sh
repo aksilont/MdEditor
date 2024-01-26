@@ -1,8 +1,8 @@
 cd App/
 tuist generate
-xcodebuild clean test \
+xcodebuild test \
     -quiet \
     -workspace 'MdEditor.xcworkspace' \
-    -scheme 'MdEditorUITests' \
+    -scheme 'MdEditorTests' \
     -sdk iphonesimulator \
     -destination 'platform=iOS Simulator,name=iPhone 14 Pro'
