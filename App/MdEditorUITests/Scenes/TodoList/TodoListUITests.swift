@@ -9,61 +9,39 @@
 import XCTest
 
 final class TodoListUITests: XCTestCase {
-
 	func test_todoList_sectionsTitle_shouldeBeHaveCorrectTitle() {
-		let app = XCUIApplication()
-		let loginScreen = LoginScreenObject(app: app)
-		let todoScreen = TodoListScreenObject(app: app)
-		app.launchArguments.append(LaunchArguments.isUItesting)
-		app.launchArguments.append(contentsOf: LaunchArguments.appLanguage)
-		app.launch()
-
-		loginScreen
-			.isLoginScreen()
-			.set(login: "Admin")
-			.set(password: "pa$$32!")
-			.login()
-
-		todoScreen
+		let sut = makeSUT()
+		sut
 			.isTodoListScreen()
 			.checkSectionsTitle()
 	}
 
 	func test_todoList_cellsInfo_shouldBeHaveCorrectInfo() {
-		let app = XCUIApplication()
-		let loginScreen = LoginScreenObject(app: app)
-		let todoScreen = TodoListScreenObject(app: app)
-		app.launchArguments.append(LaunchArguments.isUItesting)
-		app.launchArguments.append(contentsOf: LaunchArguments.appLanguage)
-		app.launch()
-
-		loginScreen
-			.isLoginScreen()
-			.set(login: "Admin")
-			.set(password: "pa$$32!")
-			.login()
-
-		todoScreen
+		let sut = makeSUT()
+		sut
 			.isTodoListScreen()
 			.checkCellsInfo()
 	}
 
 	func test_todoList_tapOnCell_shouldBeChangeStatusComplitionTask() {
+		let sut = makeSUT()
+		sut
+			.isTodoListScreen()
+			.tapOnCell()
+	}
+}
+
+// MARK: - Private Extension
+private extension TodoListUITests {
+	/// Создать и подготовить объект-приложение для тестирования
+	func makeSUT() -> TodoListScreenObject {
 		let app = XCUIApplication()
-		let loginScreen = LoginScreenObject(app: app)
-		let todoScreen = TodoListScreenObject(app: app)
+		let screen = TodoListScreenObject(app: app)
 		app.launchArguments.append(LaunchArguments.isUItesting)
+		app.launchArguments.append(LaunchArguments.skipLogin)
 		app.launchArguments.append(contentsOf: LaunchArguments.appLanguage)
 		app.launch()
 
-		loginScreen
-			.isLoginScreen()
-			.set(login: "Admin")
-			.set(password: "pa$$32!")
-			.login()
-
-		todoScreen
-			.isTodoListScreen()
-			.tapOnCell()
+		return screen
 	}
 }

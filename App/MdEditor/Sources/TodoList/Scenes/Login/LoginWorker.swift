@@ -55,7 +55,19 @@ final class LoginWorker: ILoginWorker {
 }
 
 class StubLoginWorker: ILoginWorker {
+	// MARK: - Public methods
 	func login(login: String, password: String) -> Result<Void, LoginError> {
-		.success(())
+		guard !login.isEmpty, !password.isEmpty else { return .failure(.emptyFields) }
+
+		switch (login == "Login", password == "Password") {
+		case (true, true):
+			return .success(())
+		case (false, true):
+			return .failure(.wrongLogin)
+		case (true, false):
+			return .failure(.wrongPassword)
+		case (false, false):
+			return .failure(.errorAuth)
+		}
 	}
 }

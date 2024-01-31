@@ -46,3 +46,15 @@ enum Colors {
 		dark: Asset.WarmAndCold.Blue.fadedBlue.color
 	)
 }
+
+enum Theme {
+	static let mainColor = Colors.purple
+	static let accentColor = Colors.purple
+	static let tintColor = Colors.orange
+	static let textColor = Colors.black
+	static let secondaryTextColor = Colors.purple
+	static let importantColor = Colors.red
+	static let tintColorCell = Colors.green
+	static let backgroundColor = Colors.white
+	static let borderColor = Colors.purple
+}

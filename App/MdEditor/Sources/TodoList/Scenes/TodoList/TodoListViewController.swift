@@ -41,7 +41,6 @@ final class TodoListViewController: UITableViewController, Accessible {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		setupUI()
-		generateAccessibilityIdentifiers()
 	}
 
 	override func viewWillAppear(_ animated: Bool) {
@@ -92,7 +91,7 @@ extension TodoListViewController {
 private extension TodoListViewController {
 
 	private func setupUI() {
-		view.backgroundColor = ThemeProvider.colors.backgroundColor
+		view.backgroundColor = Theme.backgroundColor
 		title = L10n.TodoList.title
 		navigationItem.setHidesBackButton(true, animated: true)
 		navigationController?.navigationBar.prefersLargeTitles = true
@@ -110,26 +109,26 @@ private extension TodoListViewController {
 	func configureCell(_ cell: UITableViewCell, with task: TodoListModel.ViewModel.Task) {
 		var contentConfiguration = cell.defaultContentConfiguration()
 
-		cell.tintColor = ThemeProvider.colors.tintColorCell
-		cell.backgroundColor = ThemeProvider.colors.backgroundColor
+		cell.tintColor = Theme.tintColorCell
+		cell.backgroundColor = Theme.backgroundColor
 		cell.selectionStyle = .none
 
 		switch task {
 		case .importantTask(let task):
-			let priorityText = [NSAttributedString.Key.foregroundColor: ThemeProvider.colors.importantColor]
+			let priorityText = [NSAttributedString.Key.foregroundColor: Theme.importantColor]
 			let taskText = NSMutableAttributedString(string: task.priority + " ", attributes: priorityText)
 
-			let titleText = [NSAttributedString.Key.foregroundColor: ThemeProvider.colors.textColor]
+			let titleText = [NSAttributedString.Key.foregroundColor: Theme.textColor]
 			let taskTitle = NSMutableAttributedString(string: task.title, attributes: titleText)
 			taskText.append(taskTitle)
 
 			contentConfiguration.attributedText = taskText
 			contentConfiguration.secondaryText = task.deadLine
-			contentConfiguration.secondaryTextProperties.color = ThemeProvider.colors.secondaryTextColor
+			contentConfiguration.secondaryTextProperties.color = Theme.secondaryTextColor
 			cell.accessoryType = task.completed ? .checkmark : .none
 		case .regularTask(let task):
 			contentConfiguration.text = task.title
-			contentConfiguration.textProperties.color = ThemeProvider.colors.textColor
+			contentConfiguration.textProperties.color = Theme.textColor
 			cell.accessoryType = task.completed ? .checkmark : .none
 		}
 		

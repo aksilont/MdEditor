@@ -6,33 +6,45 @@
 import XCTest
 
 final class LoginUITests: XCTestCase {
-
-	func test_login_withValidCred_mustBeSuccess() {
-		let app = XCUIApplication()
-		let loginScreen = LoginScreenObject(app: app)
-		let todoScreen = TodoListScreenObject(app: app)
-		app.launch()
-
-		loginScreen
+	func test_login_withValidCredentials_mustBeSuccess() {
+		let (sut, app) = makeSUT()
+		sut
 			.isLoginScreen()
-			.set(login: "Admin")
-			.set(password: "pa$$32!")
+			.set(login: LoginCredentials.valid.login)
+			.set(password: LoginCredentials.valid.password)
 			.login()
 
-		todoScreen
+		TodoListScreenObject(app: app)
 			.isTodoListScreen()
 	}
 
-	func test_login_withInValidCred_mustBeShowAlert() {
-		let app = XCUIApplication()
-		let loginScreen = LoginScreenObject(app: app)
-		app.launch()
-
-		loginScreen
+	func test_login_withInvalidCredentials_mustBeShowAlert() {
+		let (sut, _) = makeSUT()
+		sut
 			.isLoginScreen()
-			.set(password: "user")
-			.set(login: "wrongPass")
+			.set(login: LoginCredentials.invalid.login)
+			.set(password: LoginCredentials.invalid.password)
 			.login()
 			.closeAlert()
+	}
+}
+
+// MARK: - Private Extension
+private extension LoginUITests {
+	/// Тестовые данные
+	enum LoginCredentials {
+		static let valid: (login: String, password: String) = ("Login", "Password")
+		static let invalid: (login: String, password: String) = ("wrongLogin", "wrongPass")
+	}
+
+	/// Создать и подготовить объект-приложение для тестирования
+	func makeSUT() -> (LoginScreenObject, XCUIApplication) {
+		let app = XCUIApplication()
+		let screen = LoginScreenObject(app: app)
+		app.launchArguments.append(LaunchArguments.isUItesting)
+		app.launchArguments.append(contentsOf: LaunchArguments.appLanguage)
+		app.launch()
+
+		return (screen, app)
 	}
 }

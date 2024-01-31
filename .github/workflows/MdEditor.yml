@@ -1,7 +1,7 @@
 name: MdEditor
 
 on:
-  push:
+  pull_request:
     branches: 
       - develop
 
@@ -79,22 +79,3 @@ jobs:
             -destination "platform=iOS Simulator,name=$DEVICE" \
             -derivedDataPath $DERIVED_DATA_PATH \
             -only-testing:$TEST_TARGET | xcpretty --color --simple
-  
-  delete_artifacts:
-    name: Delete artifacts
-    runs-on: macos-latest
-    needs: [build, ui_tests,unit_tests]
-    steps:
-      - name: Deleting
-        uses: geekyeggo/delete-artifact@v4
-        with:
-            name: Products
-
-  completed:
-    name: completed
-    runs-on: macos-latest
-    needs: [build, ui_tests,unit_tests]
-    steps:
-      - name: Completed
-        run: |
-          echo "Build and Test MdEditor have been successfully completed" >> $GITHUB_STEP_SUMMARY

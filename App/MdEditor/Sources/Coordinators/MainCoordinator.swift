@@ -23,6 +23,12 @@ final class MainCoordinator: BaseCoordinator {
 	// MARK: - Internal methods
 
 	override func start() {
+#if DEBUG
+		if CommandLine.skipLogin {
+			runTodoListFlow()
+			return
+		}
+#endif
 		runLoginFlow()
 	}
 
