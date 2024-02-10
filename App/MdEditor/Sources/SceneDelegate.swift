@@ -44,7 +44,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		return orderedTaskManager
 	}
 
-	private func buildStorage() -> IStorageService {
-		FileStorageService()
+	private func buildStorage() -> IFileStorage {
+		FileStorage()
 	}
 }

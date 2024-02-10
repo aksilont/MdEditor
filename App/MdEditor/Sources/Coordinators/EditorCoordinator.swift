@@ -14,8 +14,8 @@ final class EditorCoordinator: ICoordinator {
 
 	private let navigationController: UINavigationController
 
-	var openFileListScene: (() -> Void)?
-	var openAboutScene: (() -> Void)?
+	var openFileListSceen: (() -> Void)?
+	var openAboutSceen: (() -> Void)?
 
 	// MARK: - Initialization
 
@@ -34,8 +34,8 @@ final class EditorCoordinator: ICoordinator {
 	private func showStartScreen() {
 		let assembler = StartScreenAssembler()
 		let viewController = assembler.assembly(
-			openFileClosure: openFileListScene,
-			openAboutClosure: openAboutScene
+			openFileClosure: openFileListSceen,
+			openAboutClosure: openAboutSceen
 		)
 		navigationController.pushViewController(viewController, animated: true)
 	}

@@ -1,26 +1,25 @@
 //
-//  FileSystemEntity.swift
+//  File.swift
 //  MdEditor
 //
-//  Created by Aksilont on 07.02.2024.
+//  Created by Aksilont on 04.02.2024.
 //  Copyright © 2024 EncodedTeam. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
-struct FileSystemEntity {
+struct File {
 	var url: URL
 	var isDir = false
+	var nestedFiles: [File] = []
 	var creationDate = Date()
 	var modificationDate = Date()
-	var size: UInt64 = .zero
+	var size: UInt64 = 0
 
-	var name: String { url.lastPathComponent.replacingOccurrences(of: ".\(ext)", with: "") }
-	var fullName: String { url.lastPathComponent }
+	var name: String { url.lastPathComponent }
 	var ext: String { url.pathExtension }
 	var parent: String? { url.pathComponents.dropLast().last }
 	var path: String { url.relativePath }
-	var preview: UIImage { UIImage(randomColorWithSize: CGSize(width: 150, height: 250)) }
 
 	func getFormattedSize(with size: UInt64) -> String {
 		var convertedValue = Double(size)
@@ -40,18 +39,18 @@ struct FileSystemEntity {
 	func getFormattedAttributes() -> String {
 		let formattedSize = getFormattedSize()
 		let dateFormatter = DateFormatter()
-		dateFormatter.dateFormat = L10n.FileList.dateFormat
+		dateFormatter.dateFormat = "dd.MM.yy HH:mm"
 
-		if isDir {
-			return "\(dateFormatter.string(from: modificationDate)) | <dir>"
-		} else {
-			return "\"\(ext)\" – \(dateFormatter.string(from: modificationDate)) | \(formattedSize)"
-		}
+		return "\(dateFormatter.string(from: modificationDate))\n\(formattedSize)"
 	}
-}
 
-extension FileSystemEntity: Comparable {
-	static func < (lhs: FileSystemEntity, rhs: FileSystemEntity) -> Bool {
-		lhs.modificationDate < rhs.modificationDate
+	func loadFileBody() -> String {
+		var text = ""
+		do {
+			text = try String(contentsOfFile: path, encoding: String.Encoding.utf8)
+		} catch {
+			text = "Failed to read text from \(name)"
+		}
+		return text
 	}
 }

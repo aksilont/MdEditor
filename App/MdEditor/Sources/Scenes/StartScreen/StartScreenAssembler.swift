@@ -14,7 +14,7 @@ final class StartScreenAssembler {
 		openFileClosure: OpenFileListClosure?,
 		openAboutClosure: OpenAboutClosure?
 	) -> StartScreenViewController {
-		let fileStorage = FileStorageService()
+		let fileStorage = FileStorage()
 		let viewController = StartScreenViewController()
 		let presenter = StartScreenPresenter(
 			viewController: viewController,

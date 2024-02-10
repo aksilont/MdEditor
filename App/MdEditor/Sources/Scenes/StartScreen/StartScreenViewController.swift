@@ -66,7 +66,6 @@ final class StartScreenViewController: UIViewController {
 extension StartScreenViewController: IStartScreenViewController {
 	func render(with viewModel: StartScreenModel.ViewModel) {
 		self.viewModel = viewModel
-		collectionViewDocs.reloadData()
 	}
 }
 
@@ -100,7 +99,7 @@ extension StartScreenViewController: UICollectionViewDataSource, UICollectionVie
 		layout collectionViewLayout: UICollectionViewLayout,
 		sizeForItemAt indexPath: IndexPath
 	) -> CGSize {
-		let width = collectionView.frame.width / 3
+		let width = collectionView.frame.width / 4
 		let height = collectionView.frame.height
 
 		return CGSize(width: width, height: height)
@@ -115,7 +114,6 @@ private extension StartScreenViewController {
 		navigationItem.setHidesBackButton(true, animated: true)
 		navigationItem.backButtonDisplayMode = .minimal
 		navigationController?.navigationBar.prefersLargeTitles = true
-		navigationItem.backButtonDisplayMode = .minimal
 		view.backgroundColor = Theme.backgroundColor
 
 		interactor?.fetchData()
@@ -151,14 +149,14 @@ private extension StartScreenViewController {
 		return collectionView
 	}
 
-	func makeButton(with title: String, and image: UIImage?) -> UIButton {
+	func makeButton(with title: String, and systemImageName: String) -> UIButton {
 		let button = UIButton()
 
 		var configuration = UIButton.Configuration.plain()
 		configuration.title = title
 		configuration.baseForegroundColor = Theme.mainColor
-		configuration.image = image
-		configuration.imageReservation = Sizes.M.imageWidth
+		configuration.image = UIImage(systemName: systemImageName)
+//		configuration.imageReservation = Sizes.M.imageWidth
 		configuration.imagePadding = Sizes.Padding.half
 
 		button.configuration = configuration

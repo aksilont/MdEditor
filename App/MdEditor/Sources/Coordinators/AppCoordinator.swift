@@ -13,11 +13,11 @@ final class AppCoordinator: BaseCoordinator {
 	private let navigationController: UINavigationController
 	private let window: UIWindow?
 	private let taskmanager: ITaskManager
-	private let storage: IStorageService
+	private let storage: IFileStorage
 
 	// MARK: - Initialization
 
-	init(window: UIWindow?, taskManager: ITaskManager, storage: IStorageService) {
+	init(window: UIWindow?, taskManager: ITaskManager, storage: IFileStorage) {
 		self.navigationController = UINavigationController()
 
 		self.window = window

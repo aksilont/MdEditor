@@ -3,8 +3,6 @@
 ## Описание
 ....
 
-
-
 ## Команда разработки
 [Aleksey Efimov](https://github.com/efimovmay)
 

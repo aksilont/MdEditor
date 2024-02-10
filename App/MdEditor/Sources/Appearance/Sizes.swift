@@ -13,7 +13,7 @@ enum Sizes {
 	static let cornerRadius: CGFloat = 6
 	static let borderWidth: CGFloat = 1
 	static let topInset: CGFloat = 180.0
-	
+
 	enum Padding {
 		static let half: CGFloat = 8
 		static let semiNormal: CGFloat = 14
@@ -49,8 +49,8 @@ enum Sizes {
 			static let double: CGFloat = 16
 		}
 		enum Image {
-			static let width: CGFloat = 40
-			static let height: CGFloat = 40
+			static let width: CGFloat = 30
+			static let height: CGFloat = 30
 		}
 		enum Text {
 			static let ratioWidth: CGFloat = 0.5

@@ -13,10 +13,11 @@ final class FileListAssembler {
 	/// - Returns: `FileListViewController`
 	func assembly(
 		urls: [URL],
-		storage: IStorageService,
+		firstShow: Bool,
+		storage: IFileStorage,
 		openFileClosure: FileListClosure?
 	) -> FileListViewController {
-		let viewController = FileListViewController(urls: urls)
+		let viewController = FileListViewController(urls: urls, firstShow: firstShow)
 		let presenter = FileListPresenter(viewController: viewController, openFileClosure: openFileClosure)
 		let interactor = FileListInteractor(presenter: presenter, storage: storage)
 

@@ -14,15 +14,17 @@ final class FileListCoordinator: BaseCoordinator {
 
 	// MARK: - Private properties
 	private let urls: [URL]
-	private let storage: IStorageService
+	private let firstShow: Bool
+	private let storage: IFileStorage
 
 	// MARK: - Public properties
 	var selectFile: ((URL) -> Void)?
 
 	// MARK: - Initialization
-	init(navigationController: UINavigationController, urls: [URL], storage: IStorageService) {
+	init(navigationController: UINavigationController, urls: [URL], firstShow: Bool, storage: IFileStorage) {
 		self.navigationController = navigationController
 		self.urls = urls
+		self.firstShow = firstShow
 		self.storage = storage
 	}
 
@@ -38,6 +40,7 @@ private extension FileListCoordinator {
 		let assembler = FileListAssembler()
 		let viewController = assembler.assembly(
 			urls: urls,
+			firstShow: firstShow,
 			storage: storage
 		) { [weak self] url in
 			self?.selectFile?(url)
