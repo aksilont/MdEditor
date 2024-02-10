@@ -3,7 +3,7 @@ name: MdEditor
 on:
   push:
     branches: 
-      - develop
+      - TestingFoCI
 
 jobs:
   build:
