@@ -52,7 +52,6 @@ jobs:
           name: Products
       - name: Testing
         run: |
-          cd App
           xcodebuild test-without-building \
             -destination 'platform=iOS Simulator,name="iPhone 14 Pro"' \
             -xctestrun $(find . -type f -name "*.xctestrun") \
