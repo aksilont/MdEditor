@@ -18,7 +18,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		guard let scene = (scene as? UIWindowScene) else { return }
 		let window = UIWindow(windowScene: scene)
 
-		appCoordinator = AppCoordinator(window: window, taskManager: buildTaskManager())
+		appCoordinator = AppCoordinator(
+			window: window,
+			taskManager: buildTaskManager(),
+			storage: buildStorage()
+		)
 		appCoordinator.start()
 
 		self.window = window
@@ -38,5 +42,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 		orderedTaskManager.addTasks(tasks: repository.getTasks())
 
 		return orderedTaskManager
+	}
+
+	private func buildStorage() -> IStorageService {
+		FileStorageService()
 	}
 }

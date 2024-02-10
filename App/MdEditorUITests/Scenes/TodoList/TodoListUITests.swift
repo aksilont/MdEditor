@@ -39,7 +39,6 @@ private extension TodoListUITests {
 		let screen = TodoListScreenObject(app: app)
 		app.launchArguments.append(LaunchArguments.isUItesting)
 		app.launchArguments.append(LaunchArguments.skipLogin)
-		app.launchArguments.append(contentsOf: LaunchArguments.appLanguage)
 		app.launch()
 
 		return screen

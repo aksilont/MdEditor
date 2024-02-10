@@ -11,7 +11,6 @@ import Foundation
 enum LaunchArguments {
 	static let isUItesting = "-isUITesting"
 	static let skipLogin = "-skipLogin"
-	static let appLanguage = ["-AppleLanguages", "(en)"]
 }
 
 extension CommandLine {

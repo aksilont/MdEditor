@@ -19,7 +19,7 @@ final class LoginAssembler {
 		if CommandLine.isUITesting {
 			worker = StubLoginWorker()
 		} else {
-			worker = LoginWorker()
+			worker = TestingLoginWorker()
 		}
 		let interactor = LoginInteractor(presenter: presenter, worker: worker)
 		viewController.interactor = interactor

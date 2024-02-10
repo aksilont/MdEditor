@@ -32,3 +32,16 @@
 "TodoList.TaskPriority.high" = "!!!";
 "TodoList.TaskPriority.medium" = "!!";
 "TodoList.TaskPriority.low" = "!";
+
+// MARK: - TodoList strings
+"About.title" = "About";
+
+// MARK: - StartScreen strings
+"StartScreen.title" = "MdEditor";
+"StartScreen.newDocumentButtonTitle" = "New";
+"StartScreen.openButtonTitle" = "Open";
+"StartScreen.AboutButtonTitle" = "About";
+
+// MARK: - FileList strings
+"FileList.title" = "Searching...";
+"FileList.dateFormat" = "YYYY/MM/dd HH:mm:ss";

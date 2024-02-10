@@ -103,6 +103,7 @@ private extension LoginViewController {
 	func setupUI() {
 		view.backgroundColor = Theme.backgroundColor
 		title = L10n.Login.title
+		navigationItem.backButtonDisplayMode = .minimal
 		navigationController?.navigationBar.prefersLargeTitles = true
 
 		// Кастомная конфигурация наших полей

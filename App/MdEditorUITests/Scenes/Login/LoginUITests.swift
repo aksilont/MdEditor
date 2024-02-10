@@ -42,7 +42,6 @@ private extension LoginUITests {
 		let app = XCUIApplication()
 		let screen = LoginScreenObject(app: app)
 		app.launchArguments.append(LaunchArguments.isUItesting)
-		app.launchArguments.append(contentsOf: LaunchArguments.appLanguage)
 		app.launch()
 
 		return (screen, app)

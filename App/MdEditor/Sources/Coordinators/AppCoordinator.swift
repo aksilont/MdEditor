@@ -13,10 +13,11 @@ final class AppCoordinator: BaseCoordinator {
 	private let navigationController: UINavigationController
 	private let window: UIWindow?
 	private let taskmanager: ITaskManager
+	private let storage: IStorageService
 
 	// MARK: - Initialization
 
-	init(window: UIWindow?, taskManager: ITaskManager) {
+	init(window: UIWindow?, taskManager: ITaskManager, storage: IStorageService) {
 		self.navigationController = UINavigationController()
 
 		self.window = window
@@ -24,6 +25,7 @@ final class AppCoordinator: BaseCoordinator {
 		self.window?.makeKeyAndVisible()
 
 		self.taskmanager = taskManager
+		self.storage = storage
 	}
 	
 	// MARK: - Internal methods
@@ -33,7 +35,11 @@ final class AppCoordinator: BaseCoordinator {
 	}
 
 	func runMainFLow() {
-		let coordinator = MainCoordinator(navigationController: navigationController, taskManager: taskmanager)
+		let coordinator = MainCoordinator(
+			navigationController: navigationController,
+			taskManager: taskmanager,
+			storage: storage
+		)
 		addDependency(coordinator)
 		coordinator.start()
 	}
