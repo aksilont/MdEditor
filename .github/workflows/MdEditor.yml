@@ -38,7 +38,7 @@ jobs:
     name: Unit Tests
     env:
       SCHEME: MdEditorTests
-      DEVICE: iPhone 14 Pro
+      DEVICE: "iPhone 14 Pro"
       DERIVED_DATA_PATH: DerivedData
       TEST_TARGET: MdEditorTests
     runs-on: macos-latest
@@ -52,12 +52,13 @@ jobs:
           name: Products
       - name: Testing
         run: |
+          cd App
           xcodebuild test-without-building \
-            -scheme $SCHEME \
-            -destination "platform=iOS Simulator,name=$DEVICE" \
+            -xctestrun $(find . -type f -name "*.xctestrun") \
+            -destination "platform=iOS Simulator,name=iPhone 14 Pro" \
             -derivedDataPath $DERIVED_DATA_PATH \
             -only-testing:$TEST_TARGET | xcpretty --color --simple
-            
+
       # - name: Testing
       #   run: |
       #     xcodebuild test-without-building \
