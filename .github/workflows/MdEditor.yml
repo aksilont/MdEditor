@@ -37,8 +37,7 @@ jobs:
   unit_tests:
     name: Unit Tests
     env:
-      SCHEME: MdEditorTests
-      DEVICE: "iPhone 14 Pro"
+      DEVICE: iPhone 14 Pro
       DERIVED_DATA_PATH: DerivedData
       TEST_TARGET: MdEditorTests
     runs-on: macos-latest
@@ -53,38 +52,49 @@ jobs:
       - name: Testing
         run: |
           xcodebuild test-without-building \
-            -scheme $SCHEME \
-            -destination 'platform=iOS Simulator,name=iPhone 14 Pro' \
-            -derivedDataPath DerivedData \
+            -xctestrun $(find . -type f -name "*.xctestrun") \
+            -destination "platform=iOS Simulator,name=$DEVICE" \
+            -derivedDataPath $DERIVED_DATA_PATH \
             -only-testing:$TEST_TARGET | xcpretty --color --simple
 
-      # - name: Testing
-      #   run: |
-      #     xcodebuild test-without-building \
-      #       -scheme $SCHEME \
-      #       -xctestrun $(find . -type f -name "*.xctestrun") \
-      #       -destination "platform=iOS Simulator,name=$DEVICE" \
-      #       -derivedDataPath $DERIVED_DATA_PATH \
-      #       -only-testing:$TEST_TARGET | xcpretty --color --simple
-  # ui_tests:
-  #   name: UI Tests
-  #   env:
-  #     DEVICE: iPhone 14 Pro
-  #     DERIVED_DATA_PATH: DerivedData
-  #     TEST_TARGET: MdEditorUITests
-  #   runs-on: macos-latest
-  #   needs: [build, unit_tests]
-  #   steps:
-  #     - name: Checkout project
-  #       uses: actions/checkout@v4
-  #     - name: Download products
-  #       uses: actions/download-artifact@v4
-  #       with:
-  #         name: Products      
-  #     - name: Testing
-  #       run: |
-  #         xcodebuild test-without-building \
-  #           -xctestrun $(find . -type f -name "*.xctestrun") \
-  #           -destination "platform=iOS Simulator,name=$DEVICE" \
-  #           -derivedDataPath $DERIVED_DATA_PATH \
-  #           -only-testing:$TEST_TARGET | xcpretty --color --simple
+  ui_tests:
+    name: UI Tests
+    env:
+      DEVICE: iPhone 14 Pro
+      DERIVED_DATA_PATH: DerivedData
+      TEST_TARGET: MdEditorUITests
+    runs-on: macos-latest
+    needs: [build, unit_tests]
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v4
+      - name: Download products
+        uses: actions/download-artifact@v4
+        with:
+          name: Products      
+      - name: Testing
+        run: |
+          xcodebuild test-without-building \
+            -xctestrun $(find . -type f -name "*.xctestrun") \
+            -destination "platform=iOS Simulator,name=$DEVICE" \
+            -derivedDataPath $DERIVED_DATA_PATH \
+            -only-testing:$TEST_TARGET | xcpretty --color --simple
+  
+  delete_artifacts:
+    name: Delete artifacts
+    runs-on: macos-latest
+    needs: [build, ui_tests,unit_tests]
+    steps:
+      - name: Deleting
+        uses: geekyeggo/delete-artifact@v4
+        with:
+            name: Products
+
+  completed:
+    name: completed
+    runs-on: macos-latest
+    needs: [build, ui_tests,unit_tests]
+    steps:
+      - name: Completed
+        run: |
+          echo "Build and Test MdEditor have been successfully completed" >> $GITHUB_STEP_SUMMARY
