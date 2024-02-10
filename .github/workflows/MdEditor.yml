@@ -53,7 +53,7 @@ jobs:
       - name: Testing
         run: |
           xcodebuild test-without-building \
-            -destination 'platform=iOS Simulator,name="iPhone 14 Pro"' \
+            -destination 'platform=iOS Simulator,name=iPhone 14 Pro' \
             -xctestrun $(find . -type f -name "*.xctestrun") \
             -derivedDataPath DerivedData \
             -only-testing:$TEST_TARGET | xcpretty --color --simple
