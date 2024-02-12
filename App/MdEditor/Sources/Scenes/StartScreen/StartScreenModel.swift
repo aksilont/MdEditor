@@ -14,7 +14,6 @@ enum  StartScreenModel {
 	}
 
 	struct Response {
-
 		let docs: [Document]
 	}
 
@@ -22,12 +21,7 @@ enum  StartScreenModel {
 		let documents: [Document]
 	}
 	struct Document {
-
 		let fileName: String
-		let preview: ImageData?
+		let content: String
 	}
-}
-
-struct ImageData {
-	let data: Data?
 }

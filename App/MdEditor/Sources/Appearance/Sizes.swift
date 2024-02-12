@@ -13,7 +13,7 @@ enum Sizes {
 	static let cornerRadius: CGFloat = 6
 	static let borderWidth: CGFloat = 1
 	static let topInset: CGFloat = 180.0
-
+	
 	enum Padding {
 		static let half: CGFloat = 8
 		static let semiNormal: CGFloat = 14
@@ -42,22 +42,47 @@ enum Sizes {
 		static let imageWidth: CGFloat = 30
 	}
 
-	enum Cell {
+	enum TableView {
+		static let countRow = 10
+		enum Cell {
+			enum Padding {
+				static let half: CGFloat = 4
+				static let normal: CGFloat = 8
+				static let double: CGFloat = 16
+			}
+			enum Image {
+				static let width: CGFloat = 40
+				static let height: CGFloat = 40
+			}
+			enum Text {
+				static let ratioWidth: CGFloat = 0.5
+				static let numberOfLines = 3
+			}
+			enum SecondaryText {
+				static let numberOfLines = 3
+			}
+		}
+	}
+
+	enum CollectionView {
 		enum Padding {
-			static let half: CGFloat = 4
-			static let normal: CGFloat = 8
-			static let double: CGFloat = 16
+			static let lineSpacing: CGFloat = 20
 		}
-		enum Image {
-			static let width: CGFloat = 30
-			static let height: CGFloat = 30
+
+		enum Multiplier {
+			static let vertical: CGFloat = 1 / 5
+			static let horizontal: CGFloat = 2 / 3
+
+			static let horizontalItems: CGFloat = 10
+			static let verticalItems: CGFloat = 5
 		}
-		enum Text {
-			static let ratioWidth: CGFloat = 0.5
-			static let numberOfLines = 3
-		}
-		enum SecondaryText {
-			static let numberOfLines = 3
+	}
+
+	enum Preview {
+		static let fontSize: CGFloat = 5
+		enum Padding {
+			static let width: CGFloat = 10
+			static let height: CGFloat = 10
 		}
 	}
 }

@@ -19,11 +19,11 @@ final class StartScreenInteractor: IStartScreenInteractor {
 	// MARK: - Dependencies
 
 	private var presenter: IStartScreenPresenter?
-	private var fileStorage: IFileStorage
+	private var fileStorage: IStorageService
 
 	// MARK: - Initialization
 
-	init(presenter: IStartScreenPresenter?, fileStorage: IFileStorage) {
+	init(presenter: IStartScreenPresenter?, fileStorage: IStorageService) {
 		self.presenter = presenter
 		self.fileStorage = fileStorage
 	}
@@ -31,11 +31,24 @@ final class StartScreenInteractor: IStartScreenInteractor {
 	// MARK: - Public methods
 
 	func fetchData() {
-		let docsFromStorage = fileStorage.getAllDocs()
-		let documents = docsFromStorage.map { document in
+		Task {
+			let urls = ResourcesBundle.defaultsUrls
+			let result = await fileStorage.fetchRecent(count: 10, with: urls)
+			switch result {
+			case .success(let files):
+				await updateUI(with: files)
+			case .failure(let error):
+				fatalError(error.localizedDescription)
+			}
+		}
+	}
+
+	@MainActor
+	func updateUI(with files: [FileSystemEntity]) {
+		let documents = files.map { document in
 			StartScreenModel.Document(
-				fileName: document.fileName,
-				preview: ImageData(data: document.preview?.pngData())
+				fileName: document.name, 
+				content: document.loadFileBody()
 			)
 		}
 		let response = StartScreenModel.Response(docs: documents)

@@ -12,11 +12,11 @@ final class MainCoordinator: BaseCoordinator {
 
 	private let navigationController: UINavigationController
 	private let taskManager: ITaskManager
-	private let storage: IFileStorage
+	private let storage: IStorageService
 
 	// MARK: - Initialization
 	
-	init(navigationController: UINavigationController, taskManager: ITaskManager, storage: IFileStorage) {
+	init(navigationController: UINavigationController, taskManager: ITaskManager, storage: IStorageService) {
 		self.navigationController = navigationController
 		self.taskManager = taskManager
 		self.storage = storage
@@ -56,29 +56,25 @@ final class MainCoordinator: BaseCoordinator {
 		let coordinator = EditorCoordinator(navigationController: navigationController)
 		addDependency(coordinator)
 
-		coordinator.openFileListSceen = { [weak self] in
-			var urls: [URL] = []
-
-			let bundleUrl = Bundle.main.resourceURL
-			if let docsURL = bundleUrl?.appendingPathComponent("Documents.bundle") {
-				urls.append(docsURL)
-			}
-
-			if let homeURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first {
-				urls.append(homeURL)
-			}
-
-			self?.runFileListScene(urls: urls, firstShow: true)
+		coordinator.openFileListScene = { [weak self] in
+			self?.runFileListScene(urls: ResourcesBundle.defaultsUrls)
 		}
-
+		
+		coordinator.openAboutScene = { [weak self] in
+			let bundleUrl = Bundle.main.resourceURL
+			if let fileURL = bundleUrl?
+				.appendingPathComponent(ResourcesBundle.assets)
+				.appendingPathComponent(ResourcesBundle.about) {
+				self?.runAboutScreenScene(url: fileURL)
+			}
+		}
 		coordinator.start()
 	}
 
-	func runFileListScene(urls: [URL], firstShow: Bool = false) {
+	func runFileListScene(urls: [URL]) {
 		let coordinator = FileListCoordinator(
 			navigationController: navigationController,
 			urls: urls,
-			firstShow: firstShow,
 			storage: storage
 		)
 		addDependency(coordinator)
@@ -86,14 +82,30 @@ final class MainCoordinator: BaseCoordinator {
 			if url.hasDirectoryPath {
 				self?.runFileListScene(urls: [url])
 			} else {
-				self?.runOpenDocumentScene(url: url)
+				self?.runFileEditorScene(url: url)
 			}
 		}
 		coordinator.start()
 	}
 
-	func runOpenDocumentScene(url: URL) {
-		let viewController = DocumentViewController(url: url)
-		navigationController.pushViewController(viewController, animated: true)
+	func runFileEditorScene(url: URL, editable: Bool = true) {
+		let coordinator = FileEditorCoordinator(
+			navigationController: navigationController,
+			fileStorage: storage,
+			url: url,
+			editable: editable
+		)
+		addDependency(coordinator)
+		coordinator.start()
+	}
+	
+	func runAboutScreenScene(url: URL) {
+		let coordinator = AboutScreenCoordinator(
+			navigationController: navigationController,
+			fileStorage: storage,
+			url: url
+		)
+		addDependency(coordinator)
+		coordinator.start()
 	}
 }

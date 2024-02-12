@@ -125,14 +125,20 @@ private extension LoginViewController {
 		NSLayoutConstraint.deactivate(constraints)
 
 		let newConstraints = [
-			textFieldLogin.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+			textFieldLogin.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
 			textFieldLogin.topAnchor.constraint(equalTo: view.topAnchor, constant: thirdOfTheScreen),
-			textFieldLogin.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: Sizes.L.widthMultiplier),
+			textFieldLogin.widthAnchor.constraint(
+				equalTo: view.safeAreaLayoutGuide.widthAnchor,
+				multiplier: Sizes.L.widthMultiplier
+			),
 			textFieldLogin.heightAnchor.constraint(equalToConstant: Sizes.L.height),
 
-			textFieldPass.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+			textFieldPass.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
 			textFieldPass.topAnchor.constraint(equalTo: textFieldLogin.bottomAnchor, constant: Sizes.Padding.normal),
-			textFieldPass.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: Sizes.L.widthMultiplier),
+			textFieldPass.widthAnchor.constraint(
+				equalTo: view.safeAreaLayoutGuide.widthAnchor,
+				multiplier: Sizes.L.widthMultiplier
+			),
 			textFieldPass.heightAnchor.constraint(equalToConstant: Sizes.L.height),
 
 			buttonLogin.centerXAnchor.constraint(equalTo: view.centerXAnchor),

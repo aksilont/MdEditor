@@ -1,22 +1,22 @@
 //
-//  File.swift
+//  FileSystemEntity.swift
 //  MdEditor
 //
-//  Created by Aksilont on 04.02.2024.
+//  Created by Aksilont on 07.02.2024.
 //  Copyright © 2024 EncodedTeam. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
-struct File {
+struct FileSystemEntity {
 	var url: URL
 	var isDir = false
-	var nestedFiles: [File] = []
 	var creationDate = Date()
 	var modificationDate = Date()
-	var size: UInt64 = 0
+	var size: UInt64 = .zero
 
-	var name: String { url.lastPathComponent }
+	var name: String { url.lastPathComponent.replacingOccurrences(of: ".\(ext)", with: "") }
+	var fullName: String { url.lastPathComponent }
 	var ext: String { url.pathExtension }
 	var parent: String? { url.pathComponents.dropLast().last }
 	var path: String { url.relativePath }
@@ -39,18 +39,28 @@ struct File {
 	func getFormattedAttributes() -> String {
 		let formattedSize = getFormattedSize()
 		let dateFormatter = DateFormatter()
-		dateFormatter.dateFormat = "dd.MM.yy HH:mm"
+		dateFormatter.dateFormat = L10n.FileList.dateFormat
 
-		return "\(dateFormatter.string(from: modificationDate))\n\(formattedSize)"
+		if isDir {
+			return "\(dateFormatter.string(from: modificationDate)) | <dir>"
+		} else {
+			return "\"\(ext)\" – \(dateFormatter.string(from: modificationDate)) | \(formattedSize)"
+		}
 	}
 
 	func loadFileBody() -> String {
 		var text = ""
 		do {
-			text = try String(contentsOfFile: path, encoding: String.Encoding.utf8)
+			text = try String(contentsOf: url, encoding: String.Encoding.utf8)
 		} catch {
-			text = "Failed to read text from \(name)"
+			text = "Failed to read text from \(url.lastPathComponent)"
 		}
 		return text
+	}
+}
+
+extension FileSystemEntity: Comparable {
+	static func < (lhs: FileSystemEntity, rhs: FileSystemEntity) -> Bool {
+		lhs.modificationDate < rhs.modificationDate
 	}
 }

@@ -23,12 +23,10 @@ final class FileListViewController: UIViewController {
 	private lazy var tableView: UITableView = makeTableView()
 	private var viewModel = FileListModel.ViewModel(data: [])
 	private let urls: [URL]
-	private let firstShow: Bool
 
 	// MARK: - Initiazlization
-	init(urls: [URL], firstShow: Bool) {
+	init(urls: [URL]) {
 		self.urls = urls
-		self.firstShow = firstShow
 		super.init(nibName: nil, bundle: nil)
 	}
 	
@@ -44,11 +42,7 @@ final class FileListViewController: UIViewController {
 
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		if firstShow {
-			interactor?.fetchStartData(urls: urls)
-		} else if let url = urls.first {
-			interactor?.fetchData(url: url)
-		}
+		interactor?.fetchData(urls: urls)
 	}
 
 	override func viewDidLayoutSubviews() {
@@ -112,11 +106,7 @@ private extension FileListViewController {
 	/// Настройка UI экрана
 	func setupUI() {
 		view.backgroundColor = Theme.backgroundColor
-		if firstShow {
-			title = L10n.FileList.title
-		} else {
-			title = urls.first?.lastPathComponent ?? L10n.FileList.title
-		}
+		title = urls.first?.lastPathComponent ?? L10n.FileList.title
 		navigationItem.setHidesBackButton(false, animated: true)
 		navigationItem.backButtonDisplayMode = .minimal
 		navigationItem.largeTitleDisplayMode = .never
@@ -125,6 +115,7 @@ private extension FileListViewController {
 		tableView.dataSource = self
 		tableView.delegate = self
 		tableView.register(FileItemTableViewCell.self, forCellReuseIdentifier: FileItemTableViewCell.cellIdentifier)
+		tableView.backgroundColor = Theme.backgroundColor
 
 		// Accessibility: Identifier
 		tableView.accessibilityIdentifier = AccessibilityIdentifier.FileList.tableView.description
@@ -137,9 +128,9 @@ private extension FileListViewController {
 private extension FileListViewController {
 	func layout() {
 		let newConstraints = [
-			tableView.topAnchor.constraint(equalTo: view.topAnchor),
-			tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-			tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+			tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+			tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+			tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
 			tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
 		]
 		NSLayoutConstraint.activate(newConstraints)

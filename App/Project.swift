@@ -42,7 +42,7 @@ let project = Project(
 	),
 	packages: [
 		.local(path: .relativeToManifest("../Packages/TaskManagerPackage")),
-		.local(path: .relativeToManifest("../Packages/DataStructuresPackage")),
+		.local(path: .relativeToManifest("../Packages/DataStructuresPackage"))
 	],
 	targets: [
 		Target(
@@ -53,7 +53,10 @@ let project = Project(
 			deploymentTargets: .iOS(ProjectSettings.targerVersion),
 			infoPlist: "\(ProjectSettings.projectName)/Environments/Info.plist",
 			sources: ["\(ProjectSettings.projectName)/Sources/**", "\(ProjectSettings.projectName)/Shared/**"],
-			resources: ["\(ProjectSettings.projectName)/Resources/**"],
+			resources: [
+				"\(ProjectSettings.projectName)/Resources/**",
+				.folderReference(path: "\(ProjectSettings.projectName)/Assets")
+			],
 			scripts: scripts,
 			dependencies: [
 				.package(product: "TaskManagerPackage", type: .runtime),

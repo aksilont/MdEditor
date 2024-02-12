@@ -27,7 +27,7 @@ jobs:
             -workspace $WORKSPACE \
             -scheme $SCHEME \
             -destination "platform=iOS Simulator,name=$DEVICE" \
-            -derivedDataPath $DERIVED_DATA_PATH | xcpretty --color --simple
+            -derivedDataPath $DERIVED_DATA_PATH
       - name: Upload products
         uses: actions/upload-artifact@v4
         with:
@@ -55,7 +55,7 @@ jobs:
             -xctestrun $(find . -type f -name "*.xctestrun") \
             -destination "platform=iOS Simulator,name=$DEVICE" \
             -derivedDataPath $DERIVED_DATA_PATH \
-            -only-testing:$TEST_TARGET | xcpretty --color --simple
+            -only-testing:$TEST_TARGET
 
   ui_tests:
     name: UI Tests
@@ -78,4 +78,4 @@ jobs:
             -xctestrun $(find . -type f -name "*.xctestrun") \
             -destination "platform=iOS Simulator,name=$DEVICE" \
             -derivedDataPath $DERIVED_DATA_PATH \
-            -only-testing:$TEST_TARGET | xcpretty --color --simple
+            -only-testing:$TEST_TARGET

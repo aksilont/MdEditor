@@ -57,11 +57,12 @@ enum Theme {
 	static let tintColorCell = Colors.green
 	static let backgroundColor = Colors.white
 	static let borderColor = Colors.purple
+	static let previewColor = UIColor.systemGray6.withAlphaComponent(0.2)
 
 	enum ImageIcon {
-		static let unknown = "questionmark.app.dashed"
-		static let directory = "folder.fill"
-		static let file = "doc.text.fill"
-		static let aboutUs = "info.bubble.fill"
+		static let aboutUs = UIImage(systemName: "info.bubble.fill")
+		static let unknown = UIImage(systemName: "questionmark.app.dashed")
+		static let directory = UIImage(systemName: "folder.fill")
+		static let file = UIImage(systemName: "doc.text.fill")
 	}
 }

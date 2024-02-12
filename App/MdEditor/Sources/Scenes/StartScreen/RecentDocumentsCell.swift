@@ -11,32 +11,54 @@ import UIKit
 final class RecentDocumentCell: UICollectionViewCell {
 	static let reuseIdentifier = "RecentDocCell"
 
-	let imageView: UIImageView = {
-		let imageView = UIImageView()
-		imageView.contentMode = .scaleAspectFill
-		imageView.clipsToBounds = true
-		imageView.layer.cornerRadius = Sizes.cornerRadius
-		return imageView
-	}()
+	// MARK: - Private Properties
+	private lazy var imageView = makeImageView()
+	private lazy var label = makeLabel()
 
-	let label: UILabel = {
-		let label = UILabel()
-		label.textAlignment = .center
-		label.textColor = Theme.mainColor
-		return label
-	}()
-
+	// MARK: - Lyfecycle
 	override init(frame: CGRect) {
 		super.init(frame: frame)
-		setupViews()
+		setupView()
 	}
 
 	required init?(coder: NSCoder) {
 		super.init(coder: coder)
-		setupViews()
 	}
 
-	private func setupViews() {
+	// MARK: - Public Methods
+	func configure(with document: StartScreenModel.Document) {
+		label.text = document.fileName
+		layoutSubviews()
+		imageView.image = imageView.snapshot(with: document.content)
+	}
+}
+
+// MARK: - Setup View
+private extension RecentDocumentCell {
+	func makeImageView() -> UIImageView {
+		let imageView = UIImageView()
+		imageView.contentMode = .scaleAspectFit
+		imageView.clipsToBounds = true
+		imageView.layer.cornerRadius = Sizes.cornerRadius
+		imageView.layer.borderColor = UIColor.systemGray.cgColor
+		imageView.layer.borderWidth = 1
+		return imageView
+	}
+
+	func makeLabel() -> UILabel {
+		let label = UILabel()
+		label.textAlignment = .center
+		label.textColor = Theme.mainColor
+		label.setContentCompressionResistancePriority(.required, for: .vertical)
+
+		// Accessibility: Font
+		label.font = UIFont.preferredFont(forTextStyle: .body)
+		label.adjustsFontForContentSizeCategory = true
+
+		return label
+	}
+	
+	func setupView() {
 		addSubview(imageView)
 		addSubview(label)
 
@@ -47,11 +69,12 @@ final class RecentDocumentCell: UICollectionViewCell {
 			imageView.topAnchor.constraint(equalTo: topAnchor),
 			imageView.leadingAnchor.constraint(equalTo: leadingAnchor),
 			imageView.trailingAnchor.constraint(equalTo: trailingAnchor),
-			imageView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: Sizes.M.heightMultiplier),
+			imageView.heightAnchor.constraint(lessThanOrEqualTo: heightAnchor),
 
 			label.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: Sizes.Padding.half),
 			label.leadingAnchor.constraint(equalTo: leadingAnchor),
-			label.trailingAnchor.constraint(equalTo: trailingAnchor)
+			label.trailingAnchor.constraint(equalTo: trailingAnchor),
+			label.bottomAnchor.constraint(equalTo: bottomAnchor)
 		])
 	}
 }
