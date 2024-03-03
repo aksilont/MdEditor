@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import MarkdownPackage
 
 protocol IFileEditorInteractor: AnyObject {
 	/// Событие на предоставление данных из файла.
@@ -14,45 +15,30 @@ protocol IFileEditorInteractor: AnyObject {
 }
 
 final class FileEditorInteractor: IFileEditorInteractor {
-
 	// MARK: - Dependencies
-
 	private var presenter: IFileEditorPresenter?
-	private var fileStorage: IStorageService?
-
+	private var storage: IStorageService
+	
 	// MARK: - Private properties
-
-	private var url: URL
-
+	private var file: FileSystemEntity
+	
 	// MARK: - Initialization
-
-	init(presenter: IFileEditorPresenter, fileStorage: IStorageService, url: URL) {
+	init(presenter: IFileEditorPresenter, storage: IStorageService, file: FileSystemEntity) {
 		self.presenter = presenter
-		self.fileStorage = fileStorage
-		self.url = url
-	}
-
-	// MARK: - Public methods
-
-	func fetchData() {
-		let title = url.lastPathComponent
-		updateTitle(title: title)
-		Task {
-			let title = url.lastPathComponent
-			let result = await fileStorage?.loadFileBody(url: url) ?? ""
-			await updateUI(with: title, fileData: result)
-		}
+		self.storage = storage
+		self.file = file
 	}
 	
-	private func updateTitle(title: String) {
-		presenter?.presentTitle(responce: FileEditorModel.Response(title: title, fileData: ""))
+	// MARK: - Public methods
+	func fetchData() {
+		let title = file.name
+		let result = file.loadFileBody()
+		RecentFileManager(key: UserDefaults.Keys.recentFilesKey.rawValue).addToRecentFiles(file)
+		updateUI(with: title, fileData: result)
 	}
 
-	@MainActor
 	func updateUI(with title: String, fileData: String) {
-		presenter?.present(responce: FileEditorModel.Response(
-			title: title,
-			fileData: fileData
-		))
+		let attrributedText = MarkdownToAttributedTextConverter().convert(markdownText: fileData)
+		presenter?.present(responce: FileEditorModel.Response(title: title, fileData: attrributedText))
 	}
 }

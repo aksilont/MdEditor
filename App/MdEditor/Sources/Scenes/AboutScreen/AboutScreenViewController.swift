@@ -83,7 +83,6 @@ private extension AboutScreenViewController {
 		label.backgroundColor = Theme.backgroundColor
 		label.numberOfLines = 0
 		
-		label.font = UIFont.preferredFont(forTextStyle: .body)
 		label.adjustsFontForContentSizeCategory = true
 		
 		label.accessibilityIdentifier = AccessibilityIdentifier.AboutScreen.labelFileData
@@ -133,6 +132,6 @@ private extension AboutScreenViewController {
 
 extension AboutScreenViewController: IAboutScreenViewController {
 	func render(viewModel: AboutScreenModel.ViewModel) {
-		self.labelFileData.text = viewModel.fileData
+		self.labelFileData.attributedText = viewModel.fileData
 	}
 }

@@ -8,6 +8,7 @@
 "Return.text" = "Return";
 "Ok.text" = "Ok";
 "Error.text" = "Error";
+"Message.text" = "Message";
 
 // MARK: - LoginError strings
 "LoginError.wrongPassword" = "Wrong password.";

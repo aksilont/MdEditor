@@ -14,8 +14,8 @@ final class LoginUITests: XCTestCase {
 			.set(password: LoginCredentials.valid.password)
 			.login()
 
-		TodoListScreenObject(app: app)
-			.isTodoListScreen()
+		StartScreenObject(app: app)
+			.isStartScreen()
 	}
 
 	func test_login_withInvalidCredentials_mustBeShowAlert() {

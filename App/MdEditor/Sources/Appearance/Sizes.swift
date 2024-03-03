@@ -5,7 +5,7 @@
 //  Created by Kirill Leonov on 14.11.2023.
 //
 
-import Foundation
+import UIKit
 
 // swiftlint:disable type_name
 enum Sizes {
@@ -15,6 +15,7 @@ enum Sizes {
 	static let topInset: CGFloat = 180.0
 	
 	enum Padding {
+		static let minimum: CGFloat = 4
 		static let half: CGFloat = 8
 		static let semiNormal: CGFloat = 14
 		static let normal: CGFloat = 16
@@ -69,6 +70,8 @@ enum Sizes {
 			static let lineSpacing: CGFloat = 20
 		}
 
+		static let sectionInset = UIEdgeInsets(top: 4, left: 0, bottom: 0, right: 0)
+
 		enum Multiplier {
 			static let vertical: CGFloat = 1 / 5
 			static let horizontal: CGFloat = 2 / 3
@@ -81,8 +84,8 @@ enum Sizes {
 	enum Preview {
 		static let fontSize: CGFloat = 5
 		enum Padding {
-			static let width: CGFloat = 10
-			static let height: CGFloat = 10
+			static let x: CGFloat = 10
+			static let y: CGFloat = 10
 		}
 	}
 }

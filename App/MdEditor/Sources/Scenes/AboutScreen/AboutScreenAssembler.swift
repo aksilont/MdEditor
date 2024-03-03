@@ -10,10 +10,10 @@ import Foundation
 
 final class AboutScreenAssembler {
 	
-	func assembly(fileStorage: IStorageService, url: URL) -> AboutScreenViewController {
+	func assembly(storage: IStorageService) -> AboutScreenViewController {
 		let viewController = AboutScreenViewController()
 		let presenter = AboutScreenPresenter(viewController: viewController)
-		let interactor = AboutScreenInteractor(presenter: presenter, fileStorage: fileStorage, url: url)
+		let interactor = AboutScreenInteractor(presenter: presenter, fileStorage: storage)
 		viewController.interactor = interactor
 		
 		return viewController

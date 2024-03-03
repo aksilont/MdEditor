@@ -24,6 +24,7 @@ tuist generate
 ## Добавленные SPM-пакеты:
  - [TaskManagerPackage](Packages/TaskManagerPackage/README.md)
  - [DataStructuresPackage](Packages/DataStructuresPackage/README.md)
+ - [MarkdownPackage](Packages/MarkdownPackage/README.md)
 
 ## Команда разработки
 [Aleksey Efimov](https://github.com/efimovmay)

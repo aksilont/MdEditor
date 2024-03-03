@@ -10,18 +10,21 @@ import UIKit
 
 final class FileListAssembler {
 	/// Сборка модуля открытия файла
-	/// - Returns: `FileListViewController`
+	/// - Returns: `(FileListViewController, FileListInteractor)`
 	func assembly(
-		urls: [URL],
 		storage: IStorageService,
-		openFileClosure: FileListClosure?
-	) -> FileListViewController {
-		let viewController = FileListViewController(urls: urls)
-		let presenter = FileListPresenter(viewController: viewController, openFileClosure: openFileClosure)
-		let interactor = FileListInteractor(presenter: presenter, storage: storage)
+		file: FileSystemEntity?
+	) -> (FileListViewController, FileListInteractor) {
+		let viewController = FileListViewController()
+		let presenter = FileListPresenter(viewController: viewController)
+		let interactor = FileListInteractor(
+			presenter: presenter,
+			storage: storage,
+			file: file
+		)
 
 		viewController.interactor = interactor
 
-		return viewController
+		return (viewController, interactor)
 	}
 }

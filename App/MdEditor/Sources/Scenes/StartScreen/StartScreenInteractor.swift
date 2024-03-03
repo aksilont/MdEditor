@@ -8,42 +8,38 @@
 
 import Foundation
 
+protocol IStartScreenDelegate: AnyObject {
+	func showAbout()
+	func openFileList()
+	func newFile()
+	func openFile(file: FileSystemEntity)
+}
+
 protocol IStartScreenInteractor {
 	func fetchData()
-	func openFileList()
-	func openAbout()
+	func performAction(request: StartScreenModel.Request)
 }
 
 final class StartScreenInteractor: IStartScreenInteractor {
+	// MARK: - Public properties
+	weak var delegate: IStartScreenDelegate?
 
 	// MARK: - Dependencies
-
 	private var presenter: IStartScreenPresenter?
-	private var fileStorage: IStorageService
+	private var recentFileManager: IRecentFileManager
 
 	// MARK: - Initialization
-
-	init(presenter: IStartScreenPresenter?, fileStorage: IStorageService) {
+	init(presenter: IStartScreenPresenter?, recentFileManager: IRecentFileManager) {
 		self.presenter = presenter
-		self.fileStorage = fileStorage
+		self.recentFileManager = recentFileManager
 	}
 
 	// MARK: - Public methods
-
 	func fetchData() {
-		Task {
-			let urls = ResourcesBundle.defaultsUrls
-			let result = await fileStorage.fetchRecent(count: 10, with: urls)
-			switch result {
-			case .success(let files):
-				await updateUI(with: files)
-			case .failure(let error):
-				fatalError(error.localizedDescription)
-			}
-		}
+		let result = recentFileManager.getRecentFiles()
+		updateUI(with: result)
 	}
 
-	@MainActor
 	func updateUI(with files: [FileSystemEntity]) {
 		let documents = files.map { document in
 			StartScreenModel.Document(
@@ -55,11 +51,23 @@ final class StartScreenInteractor: IStartScreenInteractor {
 		presenter?.present(response: response)
 	}
 
-	func openFileList() {
-		presenter?.openFileList()
-	}
-
-	func openAbout() {
-		presenter?.openAbout()
+	func performAction(request: StartScreenModel.Request) {
+		switch request {
+		case .creaeteNewFile:
+			delegate?.newFile()
+		case .openFileList:
+			delegate?.openFileList()
+		case .showAbout:
+			delegate?.showAbout()
+		case .recentFileSelected(let indexPath):
+			let recentFiles = recentFileManager.getRecentFiles()
+			let recentFile = recentFiles[min(indexPath.row, recentFiles.count - 1)]
+			delegate?.openFile(file: recentFile)
+		case .deleteRecentFile(let indexPath):
+			let recentFiles = recentFileManager.getRecentFiles()
+			let recentFile = recentFiles[min(indexPath.row, recentFiles.count - 1)]
+			recentFileManager.deleteRecentFile(recentFile)
+			fetchData()
+		}
 	}
 }

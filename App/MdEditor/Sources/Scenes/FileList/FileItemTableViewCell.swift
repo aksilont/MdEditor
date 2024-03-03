@@ -9,7 +9,7 @@
 import UIKit
 
 final class FileItemTableViewCell: UITableViewCell {
-	static let cellIdentifier = "FileItemCell"
+	static let cellIdentifier = String(describing: FileItemTableViewCell.self)
 
 	// MARK: - Private properties
 	private lazy var imageViewIcon = makeImageView()
@@ -35,7 +35,7 @@ final class FileItemTableViewCell: UITableViewCell {
 	}
 
 	// MARK: - Public methods
-	func configure(with file: FileListModel.FileViewModel) {
+	func configure(with file: FileListModel.ViewModel.FileViewModel) {
 		tintColor = .darkGray
 		if file.isDir {
 			imageViewIcon.image = Theme.ImageIcon.directory

@@ -2,12 +2,13 @@
 //  ICoordinator.swift
 //  MdEditor
 //
+import Foundation
 
 protocol ICoordinator: AnyObject {
 	func start()
 }
 
-class BaseCoordinator: ICoordinator {
+class BaseCoordinator: NSObject, ICoordinator {
 
 	var childCoordinators: [ICoordinator] = []
 

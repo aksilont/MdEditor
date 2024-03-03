@@ -11,10 +11,10 @@ import Foundation
 enum AboutScreenModel {
 	
 	struct Response {
-		let fileData: String
+		let fileData: NSMutableAttributedString
 	}
 	
 	struct ViewModel {
-		let fileData: String
+		let fileData: NSMutableAttributedString
 	}
 }

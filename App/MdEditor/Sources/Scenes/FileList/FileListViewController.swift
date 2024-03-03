@@ -21,28 +21,13 @@ final class FileListViewController: UIViewController {
 
 	// MARK: - Private properties
 	private lazy var tableView: UITableView = makeTableView()
-	private var viewModel = FileListModel.ViewModel(data: [])
-	private let urls: [URL]
+	private var viewModel = FileListModel.ViewModel(title: "/", data: [])
 
-	// MARK: - Initiazlization
-	init(urls: [URL]) {
-		self.urls = urls
-		super.init(nibName: nil, bundle: nil)
-	}
-	
-	required init?(coder: NSCoder) {
-		fatalError("init(coder:) has not been implemented")
-	}
-	
 	// MARK: - Lifecycle
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		interactor?.fetchData()
 		setupUI()
-	}
-
-	override func viewWillAppear(_ animated: Bool) {
-		super.viewWillAppear(animated)
-		interactor?.fetchData(urls: urls)
 	}
 
 	override func viewDidLayoutSubviews() {
@@ -52,7 +37,7 @@ final class FileListViewController: UIViewController {
 }
 
 private extension FileListViewController {
-	func getFileForIndex(_ index: Int) -> FileListModel.FileViewModel {
+	func getFileForIndex(_ index: Int) -> FileListModel.ViewModel.FileViewModel {
 		viewModel.data[index]
 	}
 }
@@ -60,9 +45,7 @@ private extension FileListViewController {
 // MARK: - UITableViewDelegate
 extension FileListViewController: UITableViewDelegate {
 	func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-		let selectedFileURL = getFileForIndex(indexPath.row).url
-		let request = FileListModel.Request(url: selectedFileURL)
-		interactor?.didFileSelected(request: request)
+		interactor?.performAction(request: .fileSelected(indexPath: indexPath))
 	}
 }
 
@@ -106,7 +89,6 @@ private extension FileListViewController {
 	/// Настройка UI экрана
 	func setupUI() {
 		view.backgroundColor = Theme.backgroundColor
-		title = urls.first?.lastPathComponent ?? L10n.FileList.title
 		navigationItem.setHidesBackButton(false, animated: true)
 		navigationItem.backButtonDisplayMode = .minimal
 		navigationItem.largeTitleDisplayMode = .never
@@ -140,6 +122,8 @@ private extension FileListViewController {
 // MARK: - IFileListViewController
 extension FileListViewController: IFileListViewController {
 	func render(viewModel: FileListModel.ViewModel) {
+		title = viewModel.title
+		guard !viewModel.data.isEmpty else { return }
 		self.viewModel = viewModel
 		tableView.reloadData()
 	}

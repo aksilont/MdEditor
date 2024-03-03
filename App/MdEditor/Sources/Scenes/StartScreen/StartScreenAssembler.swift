@@ -9,22 +9,13 @@
 import Foundation
 
 final class StartScreenAssembler {
-
-	func assembly(
-		openFileClosure: OpenFileListClosure?,
-		openAboutClosure: OpenAboutClosure?
-	) -> StartScreenViewController {
-		let fileStorage = FileStorageService()
+	func assembly(recentFileManager: IRecentFileManager) -> (StartScreenViewController, StartScreenInteractor) {
 		let viewController = StartScreenViewController()
-		let presenter = StartScreenPresenter(
-			viewController: viewController,
-			openFileClosure: openFileClosure,
-			openAboutClosure: openAboutClosure
-		)
-		let interactor = StartScreenInteractor(presenter: presenter, fileStorage: fileStorage)
+		let presenter = StartScreenPresenter(viewController: viewController)
+		let interactor = StartScreenInteractor(presenter: presenter, recentFileManager: recentFileManager)
 
 		viewController.interactor = interactor
 
-		return viewController
+		return (viewController, interactor)
 	}
 }

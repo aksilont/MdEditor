@@ -12,30 +12,57 @@ protocol IFileListPresenter {
 	/// Отображение экрана со списком заданий.
 	/// - Parameter response: Подготовленные к отображению данные.
 	func present(response: FileListModel.Response)
-
-	func didFileSelected(response: URL)
 }
-
-typealias FileListClosure = (URL) -> Void
 
 final class FileListPresenter: IFileListPresenter {
 	// MARK: - Dependencies
 	private weak var viewController: IFileListViewController?
-	private var openFileClosure: FileListClosure?
 
 	// MARK: - Initialization
-	init(viewController: IFileListViewController, openFileClosure: FileListClosure?) {
+	init(viewController: IFileListViewController) {
 		self.viewController = viewController
-		self.openFileClosure = openFileClosure
 	}
 
 	// MARK: - Public methods
 	func present(response: FileListModel.Response) {
-		let viewModel = FileListModel.ViewModel(data: response.data)
+		let fileViewModels = response.data.map {
+			FileListModel.ViewModel.FileViewModel(
+				name: $0.name,
+				isDir: $0.isDir,
+				description: getFormattedAttributes(file: $0)
+			)
+		}
+
+		let viewModel = FileListModel.ViewModel(
+			title: response.currentFile?.name ?? "/",
+			data: fileViewModels
+		)
 		viewController?.render(viewModel: viewModel)
 	}
+}
 
-	func didFileSelected(response: URL) {
-		openFileClosure?(response)
+extension FileListPresenter {
+	func getFormattedSize(with size: UInt64) -> String {
+		var convertedValue = Double(size)
+		var multiplyFactor = 0
+		let tokens = ["B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"]
+		while convertedValue > 1024 {
+			convertedValue /= 1024
+			multiplyFactor += 1
+		}
+		return String(format: multiplyFactor == 0 ? "%.0f %@" : "%4.2f %@", convertedValue, tokens[multiplyFactor])
+	}
+
+	func getFormattedAttributes(file: FileSystemEntity) -> String {
+		let formattedSize = getFormattedSize(with: file.size)
+
+		let dateFormatter = DateFormatter()
+		dateFormatter.dateFormat = L10n.FileList.dateFormat
+
+		if file.isDir {
+			return "\(dateFormatter.string(from: file.modificationDate)) | <dir>"
+		} else {
+			return "\"\(file.ext)\" – \(dateFormatter.string(from: file.modificationDate)) | \(formattedSize)"
+		}
 	}
 }

@@ -8,6 +8,7 @@
 "Return.text" = "Вернуться";
 "Ok.text" = "Ок";
 "Error.text" = "Ошибка";
+"Message.text" = "Сообщение";
 
 // MARK: - LoginError strings
 "LoginError.wrongPassword" = "Неверный пароль.";

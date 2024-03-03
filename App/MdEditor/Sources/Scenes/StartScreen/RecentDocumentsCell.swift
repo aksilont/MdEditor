@@ -7,15 +7,19 @@
 //
 
 import UIKit
+import Combine
 
 final class RecentDocumentCell: UICollectionViewCell {
-	static let reuseIdentifier = "RecentDocCell"
+	static let reuseIdentifier = String(describing: RecentDocumentCell.self)
 
 	// MARK: - Private Properties
 	private lazy var imageView = makeImageView()
 	private lazy var label = makeLabel()
+	private lazy var imageViewDeleteItem = makeImageViewDeleteItem()
 
-	// MARK: - Lyfecycle
+	var deleteItemPublisher = PassthroughSubject<Void, Never>()
+
+	// MARK: - Initialization
 	override init(frame: CGRect) {
 		super.init(frame: frame)
 		setupView()
@@ -27,9 +31,31 @@ final class RecentDocumentCell: UICollectionViewCell {
 
 	// MARK: - Public Methods
 	func configure(with document: StartScreenModel.Document) {
+		imageView.image = nil
+
 		label.text = document.fileName
 		layoutSubviews()
 		imageView.image = imageView.snapshot(with: document.content)
+
+		imageViewDeleteItem.isHidden = false
+		imageViewDeleteItem.isUserInteractionEnabled = true
+	}
+
+	func showStub() {
+		imageView.image = nil
+		label.text = nil
+
+		let insets = UIEdgeInsets(
+			top: -Sizes.Padding.normal,
+			left: -Sizes.Padding.normal,
+			bottom: -Sizes.Padding.normal,
+			right: -Sizes.Padding.normal
+		)
+		imageView.image = Theme.ImageIcon.newFile?.withAlignmentRectInsets(insets)
+		imageView.tintColor = Theme.stubColor
+
+		imageViewDeleteItem.isHidden = true
+		imageViewDeleteItem.isUserInteractionEnabled = false
 	}
 }
 
@@ -38,10 +64,6 @@ private extension RecentDocumentCell {
 	func makeImageView() -> UIImageView {
 		let imageView = UIImageView()
 		imageView.contentMode = .scaleAspectFit
-		imageView.clipsToBounds = true
-		imageView.layer.cornerRadius = Sizes.cornerRadius
-		imageView.layer.borderColor = UIColor.systemGray.cgColor
-		imageView.layer.borderWidth = 1
 		return imageView
 	}
 
@@ -50,31 +72,62 @@ private extension RecentDocumentCell {
 		label.textAlignment = .center
 		label.textColor = Theme.mainColor
 		label.setContentCompressionResistancePriority(.required, for: .vertical)
+		label.setContentHuggingPriority(.required, for: .vertical)
+		label.lineBreakStrategy = .hangulWordPriority
+		label.lineBreakMode = .byTruncatingMiddle
 
 		// Accessibility: Font
-		label.font = UIFont.preferredFont(forTextStyle: .body)
+		label.font = UIFont.preferredFont(forTextStyle: .caption1)
 		label.adjustsFontForContentSizeCategory = true
 
 		return label
 	}
-	
+
+	func makeImageViewDeleteItem() -> UIImageView {
+		let imageView = UIImageView(image: Theme.ImageIcon.deleteFile)
+		imageView.tintColor = Theme.tintColor
+		let tapGestureRecogniser = UITapGestureRecognizer(target: self, action: #selector(deleteItemAction))
+		imageView.addGestureRecognizer(tapGestureRecogniser)
+		imageView.isUserInteractionEnabled = true
+		return imageView
+	}
+
 	func setupView() {
 		addSubview(imageView)
 		addSubview(label)
+		addSubview(imageViewDeleteItem)
+
+		imageView.addBorder(radius: Sizes.cornerRadius)
 
 		imageView.translatesAutoresizingMaskIntoConstraints = false
 		label.translatesAutoresizingMaskIntoConstraints = false
+		imageViewDeleteItem.translatesAutoresizingMaskIntoConstraints = false
 
+		setupConstraints()
+	}
+
+	func setupConstraints() {
 		NSLayoutConstraint.activate([
-			imageView.topAnchor.constraint(equalTo: topAnchor),
-			imageView.leadingAnchor.constraint(equalTo: leadingAnchor),
-			imageView.trailingAnchor.constraint(equalTo: trailingAnchor),
-			imageView.heightAnchor.constraint(lessThanOrEqualTo: heightAnchor),
+			imageViewDeleteItem.topAnchor.constraint(equalTo: topAnchor),
+			imageViewDeleteItem.trailingAnchor.constraint(equalTo: trailingAnchor),
+			imageViewDeleteItem.widthAnchor.constraint(equalTo: imageViewDeleteItem.heightAnchor),
 
-			label.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: Sizes.Padding.half),
+			imageView.topAnchor.constraint(equalTo: imageViewDeleteItem.centerYAnchor),
+			imageView.leadingAnchor.constraint(equalTo: leadingAnchor),
+			imageView.trailingAnchor.constraint(equalTo: imageViewDeleteItem.centerXAnchor),
+
+			label.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: Sizes.Padding.minimum),
 			label.leadingAnchor.constraint(equalTo: leadingAnchor),
-			label.trailingAnchor.constraint(equalTo: trailingAnchor),
+			label.trailingAnchor.constraint(equalTo: imageViewDeleteItem.centerXAnchor),
 			label.bottomAnchor.constraint(equalTo: bottomAnchor)
 		])
+	}
+}
+
+// MARK: - Actions
+private extension RecentDocumentCell {
+	@objc
+	func deleteItemAction() {
+		deleteItemPublisher.send()
 	}
 }

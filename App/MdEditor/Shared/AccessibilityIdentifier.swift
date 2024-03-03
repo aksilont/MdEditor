@@ -80,6 +80,26 @@ enum AccessibilityIdentifier {
 		}
 	}
 	
+	enum StartScreen: CustomStringConvertible {
+		case collectionView
+		case buttonNew
+		case buttonOpen
+		case buttonAbout
+		
+		var description: String {
+			switch self {
+			case .collectionView:
+				return "StartScreenViewController.collectionView"
+			case .buttonNew:
+				return "StartScreenViewController.buttonNew"
+			case .buttonOpen:
+				return "StartScreenViewController.buttonOpen"
+			case .buttonAbout:
+				return "StartScreenViewController.buttonAbout"
+			}
+		}
+	}
+	
 	enum AboutScreen {
 		static let labelFileData = "AboutScreenViewController.labelFileData"
 	}

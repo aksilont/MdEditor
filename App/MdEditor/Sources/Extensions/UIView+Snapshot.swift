@@ -23,13 +23,15 @@ extension UIView {
 				NSAttributedString.Key.foregroundColor: Theme.textColor
 			]
 
+			let rect = CGRect(
+				x: Sizes.Preview.Padding.x,
+				y: Sizes.Preview.Padding.y,
+				width: bounds.width - (Sizes.Preview.Padding.x * 2),
+				height: bounds.height - (Sizes.Preview.Padding.y * 2)
+			)
+
 			text.draw(
-				with: CGRect(
-					x: Sizes.Preview.Padding.width,
-					y: Sizes.Preview.Padding.height,
-					width: bounds.width - (Sizes.Preview.Padding.width * 2),
-					height: bounds.height - (Sizes.Preview.Padding.height * 2)
-				),
+				with: rect,
 				options: .usesLineFragmentOrigin,
 				attributes: attributes,
 				context: nil
