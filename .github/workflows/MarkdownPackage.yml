@@ -1,21 +1,23 @@
 name: MarkdownPackage
 
 on:
-  pull_request:
+  push:
     branches:
       - develop
 
 jobs:
-  build:
-    name: Test MarkdownPackage
+  MarkdownPackage_UnitTests:
+    name: Build and Tests
+    env:
+      SCHEME: MarkdownPackageTests
+      DEVICE: iPhone 14 Pro
     runs-on: macos-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Build
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Testing
         run: |
           cd Packages/MarkdownPackage
-          swift build -v
-      - name: Run tests
-        run: | 
-          cd Packages/MarkdownPackage
-          swift test -v
+          xcodebuild test \
+            -scheme $SCHEME \
+            -destination "platform=iOS Simulator,name=$DEVICE"
