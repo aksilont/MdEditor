@@ -143,6 +143,10 @@ public final class ImageNode: BaseNode {
 public final class LineBreakNode: BaseNode {
 }
 
+// MARK: - Empty Line
+public final class EmptyLineNode: BaseNode {
+}
+
 // MARK: - Horizontal Line
 public final class HorizontalLineNode: BaseNode {
 	public let level: Int
@@ -161,6 +165,14 @@ public final class CodeBlockNode: BaseNode {
 		self.level = level
 		self.language = language
 		super.init(children)
+	}
+}
+
+public final class CodeBlockItem: BaseNode {
+	public let code: String
+
+	public init(code: String) {
+		self.code = code
 	}
 }
 

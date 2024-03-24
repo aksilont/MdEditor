@@ -1,0 +1,23 @@
+name: NetworkLayerPackage
+
+on:
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  NetworkLayerPackage_UnitTests:
+    name: Build & Tests
+    env:
+      SCHEME: NetworkLayerPackage
+      DEVICE: iPhone 14 Pro
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Building & Testing
+        run: |
+          cd Packages/NetworkLayerPackage
+          xcodebuild test \
+            -scheme $SCHEME \
+            -destination "platform=iOS Simulator,name=$DEVICE"

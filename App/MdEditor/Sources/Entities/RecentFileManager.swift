@@ -24,13 +24,17 @@ protocol IRecentFileManager {
 	/// Удаляет указанный системный файл из списка последних файлов
 	/// - Parameter file: системный файл
 	func deleteRecentFile(_ file: FileSystemEntity)
+	
+	/// Изменяет количество элементов для показа
+	/// - Parameter count: количество элементов
+	func changeCountOfRecentFilesTo(_ count: Int)
 }
 
 final class RecentFileManager: IRecentFileManager {
 	// MARK: - Private properties
 	private let userDefaults: UserDefaults
 	private let key: String
-	private let countOfShowItems: Int
+	private var countOfShowItems: Int
 
 	// MARK: - Initialization
 	init(userDefaults: UserDefaults = UserDefaults.standard, key: String, countOfShowItems: Int = 5) {
@@ -72,6 +76,10 @@ final class RecentFileManager: IRecentFileManager {
 			encodedData,
 			forKey: key
 		)
+	}
+
+	func changeCountOfRecentFilesTo(_ count: Int) {
+		countOfShowItems = count
 	}
 }
 

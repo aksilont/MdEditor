@@ -43,7 +43,7 @@ public final class Lexer: ILexer {
 					continue
 				}
 
-				tokens.append(parseLineBreak(rawText: line))
+				tokens.append(parseEmptyLine(rawText: line))
 				tokens.append(parseHeader(rawText: line))
 				tokens.append(parseBlockquote(rawText: line))
 				tokens.append(parseTextLine(rawText: line))
@@ -57,13 +57,13 @@ public final class Lexer: ILexer {
 }
 
 private extension Lexer {
-	func parseLineBreak(rawText: String) -> Token? {
+	func parseEmptyLine(rawText: String) -> Token? {
 		guard rawText.isEmpty else { return nil }
-		return .lineBreak
+		return .emptyLine
 	}
 
 	func parseHorizontalLine(rawText: String) -> Token? {
-		let pattern = #"^_{3,}$"#
+		let pattern = #"^[\_\-\=]{3,}"#
 		if rawText.firstMatch(pattern: pattern) != nil {
 			let level = rawText.filter { $0 == "_" }.count
 			return .horizontalLine(level: level)
@@ -94,7 +94,7 @@ private extension Lexer {
 	}
 
 	func parseBlockquote(rawText: String) -> Token? {
-		let pattern = #"^(?<level>>{1,6})\s+(?<text>.+)"#
+		let pattern = #"^(?<level>>{1,6})\s*(?<text>.+)"#
 		if let match = rawText.firstMatch(pattern: pattern) {
 			let rangeLevel = match.range(withName: "level")
 			let rangeText = match.range(withName: "text")

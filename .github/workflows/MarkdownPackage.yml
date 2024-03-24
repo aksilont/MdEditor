@@ -1,13 +1,13 @@
 name: MarkdownPackage
 
 on:
-  push:
+  pull_request:
     branches:
       - develop
 
 jobs:
   MarkdownPackage_UnitTests:
-    name: Build and Tests
+    name: Build & Tests
     env:
       SCHEME: MarkdownPackageTests
       DEVICE: iPhone 14 Pro
@@ -15,7 +15,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Testing
+      - name: Building & Testing
         run: |
           cd Packages/MarkdownPackage
           xcodebuild test \

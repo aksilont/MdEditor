@@ -15,7 +15,7 @@ public enum Token {
 	case bulletedListItem(level: Int, marker: String, text: Text)
 	case numberedListItem(level: Int, marker: String, text: Text)
 	case textLine(text: Text)
-	case lineBreak
+	case emptyLine
 	case horizontalLine(level: Int)
 }
 

@@ -28,9 +28,11 @@ final class LoginInteractor: ILoginInteractor {
 	// MARK: - Public methods
 
 	func login(request: LoginModel.Request) {
-		let result = worker.login(login: request.login, password: request.password)
-		let responce = LoginModel.Response(result: result)
-
-		presenter?.present(responce: responce)
+		worker.login(login: request.login, password: request.password) { [weak self] result in
+			DispatchQueue.main.async {
+				let responce = LoginModel.Response(result: result)
+				self?.presenter?.present(responce: responce)
+			}
+		}
 	}
 }

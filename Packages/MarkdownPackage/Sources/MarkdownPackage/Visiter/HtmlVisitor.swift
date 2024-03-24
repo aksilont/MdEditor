@@ -67,10 +67,14 @@ final class HtmlVisitor: IVisitor {
 		String()
 	}
 	
-	func visit(_ node: MarkdownPackage.LineBreakNode) -> String {
+	func visit(_ node: MarkdownPackage.EmptyLineNode) -> String {
 		String()
 	}
 	
+	func visit(_ node: MarkdownPackage.LineBreakNode) -> String {
+		String()
+	}
+
 	func visit(_ node: MarkdownPackage.HorizontalLineNode) -> String {
 		String()
 	}
@@ -79,6 +83,10 @@ final class HtmlVisitor: IVisitor {
 		String()
 	}
 	
+	func visit(_ node: MarkdownPackage.CodeBlockItem) -> String {
+		String()
+	}
+
 	func visit(_ node: MarkdownPackage.BulletedListNode) -> String {
 		String()
 	}

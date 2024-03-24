@@ -108,6 +108,7 @@ private extension LoginViewController {
 
 		// Кастомная конфигурация наших полей
 		textFieldLogin.placeholder = L10n.Login.loginPlaceholder
+		textFieldLogin.autocapitalizationType = .none
 		textFieldPass.placeholder = L10n.Login.passPlaceholder
 		textFieldPass.isSecureTextEntry = true
 

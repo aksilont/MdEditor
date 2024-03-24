@@ -6,29 +6,24 @@
 import UIKit
 
 final class AppCoordinator: BaseCoordinator {
-	// MARK: - Dependencies
+	// MARK: - Private properties
 	private let navigationController: UINavigationController
-	private let window: UIWindow?
 
 	// MARK: - Initialization
 	init(window: UIWindow?) {
 		self.navigationController = UINavigationController()
 
-		self.window = window
-		self.window?.rootViewController = navigationController
-		self.window?.makeKeyAndVisible()
+		window?.rootViewController = navigationController
+		window?.makeKeyAndVisible()
 	}
 	
 	// MARK: - Internal methods
 	override func start() {
-		runMainFLow()
-	}
-}
-
-// MARK: - Private methods
-private extension AppCoordinator {
-	func runMainFLow() {
+#if DEBUG
+		let coordinator = TestCoordinator(navigationController: navigationController)
+#else
 		let coordinator = MainCoordinator(navigationController: navigationController)
+#endif
 		addDependency(coordinator)
 		coordinator.start()
 	}

@@ -68,6 +68,18 @@ final class StartScreenInteractor: IStartScreenInteractor {
 			let recentFile = recentFiles[min(indexPath.row, recentFiles.count - 1)]
 			recentFileManager.deleteRecentFile(recentFile)
 			fetchData()
+		case .changeCountRecentFiles(landscape: let landscape):
+			if landscape {
+				recentFileManager.changeCountOfRecentFilesTo(
+					Sizes.CollectionView.countOfCellsInLandscape
+				)
+			} else {
+				recentFileManager.changeCountOfRecentFilesTo(
+					Sizes.CollectionView.countOfCellsInPortrait
+				)
+			}
+			let result = recentFileManager.getRecentFiles()
+			updateUI(with: result)
 		}
 	}
 }

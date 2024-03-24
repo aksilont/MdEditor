@@ -41,7 +41,7 @@ private extension LoginUITests {
 	func makeSUT() -> (LoginScreenObject, XCUIApplication) {
 		let app = XCUIApplication()
 		let screen = LoginScreenObject(app: app)
-		app.launchArguments.append(LaunchArguments.isUItesting)
+		app.appendArgument(.isUITesting)
 		app.launch()
 
 		return (screen, app)

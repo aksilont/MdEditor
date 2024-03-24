@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import MarkdownPackage
 
 protocol IFileListCoordinator: ICoordinator {
 	/// Метод для завершении сценария
@@ -58,12 +59,21 @@ private extension FileListCoordinator {
 	}
 
 	func showFileEditorScene(file: FileSystemEntity) {
-		let viewController = FileEditorAssembler().assembly(
+		let (viewController, interactor) = FileEditorAssembler().assembly(
 			storage: storage,
 			file: file,
 			editable: true
 		)
+		interactor.delegate = self
 
+		navigationController.pushViewController(viewController, animated: true)
+	}
+
+	func showPdfPreviewScene(file: FileSystemEntity, author: String) {
+		let converter = MainQueueDispatchConverterDecorator<Data>(
+			MarkdownToPdfConverter(pdfAuthor: author, pdfTitle: file.name)
+		)
+		let viewController = PdfPreviewAssembler().assembly(file: file, converter: converter)
 		navigationController.pushViewController(viewController, animated: true)
 	}
 }
@@ -89,5 +99,16 @@ extension FileListCoordinator: IFileListDelegate {
 	
 	func openFile(file: FileSystemEntity) {
 		showFileEditorScene(file: file)
+	}
+
+	func goHome() {
+		navigationController.popToRootViewController(animated: true)
+	}
+}
+
+// MARK: - IFileEditorDelegate
+extension FileListCoordinator: IFileEditorDelegate {
+	func exportToPDF(file: FileSystemEntity, author: String) {
+		showPdfPreviewScene(file: file, author: author)
 	}
 }

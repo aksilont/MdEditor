@@ -11,6 +11,9 @@
 
 ## 2. Text blocks
 
+Строка1
+Строка2
+
 Lorem **ipsum** dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
 Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
@@ -78,7 +81,7 @@ Internal link: [[link to h1]]
 
 image:
 
-![[15f4b6353310a9cd0ea994c7830b4c4c_MD5.jpeg|500]]
+![15f4b6353310a9cd0ea994c7830b4c4c_MD5.jpeg|500](url)
 
 emoji: ⛺  😂‚
 
@@ -93,20 +96,20 @@ emoji: ⛺  😂‚
 ## 10. other
 ### 10.1 Escaped special symbols
 
-\\\\
-\\`
-\\*
-\\_
-\\{ \\}
-\\[ \\]
-\\< \\>
-\\( \\)
-\\#
-\\+
-\\-
-\\.
-\\!
-\\|
+\\
+\`
+\*
+\_
+\{ \}
+\[ \]
+\< \>
+\( \)
+\#
+\+
+\-
+\.
+\!
+\|
 
 ### 10.2 Hline
 

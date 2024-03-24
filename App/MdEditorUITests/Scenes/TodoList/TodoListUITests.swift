@@ -37,8 +37,8 @@ private extension TodoListUITests {
 	func makeSUT() -> TodoListScreenObject {
 		let app = XCUIApplication()
 		let screen = TodoListScreenObject(app: app)
-		app.launchArguments.append(LaunchArguments.isUItesting)
-		app.launchArguments.append(LaunchArguments.skipLogin)
+		app.appendArgument(.isUITesting)
+		app.appendArgument(.runTodoListFlow)
 		app.launch()
 
 		return screen

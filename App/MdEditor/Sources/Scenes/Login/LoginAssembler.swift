@@ -8,7 +8,6 @@
 import UIKit
 
 final class LoginAssembler {
-	
 	/// Сборка модуля авторизации
 	/// - Parameter loginResultClosure: замыкание оповещающие о результате авторизации
 	/// - Returns: вью
@@ -16,10 +15,10 @@ final class LoginAssembler {
 		let viewController = LoginViewController()
 		let presenter = LoginPresenter(viewController: viewController, loginResultClosure: loginResultClosure)
 		let worker: ILoginWorker
-		if CommandLine.isUITesting {
+		if LaunchArguments[.isUITesting] {
 			worker = StubLoginWorker()
 		} else {
-			worker = TestingLoginWorker()
+			worker = LoginWorker()
 		}
 		let interactor = LoginInteractor(presenter: presenter, worker: worker)
 		viewController.interactor = interactor

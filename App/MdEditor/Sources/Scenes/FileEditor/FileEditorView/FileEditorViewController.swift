@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Combine
 
 /// Протокол экрана About.
 protocol IFileEditorViewController: AnyObject {
@@ -20,14 +21,21 @@ final class FileEditorViewController: UIViewController {
 	var interactor: IFileEditorInteractor?
 	
 	// MARK: - Private properties
-	
+	private lazy var menuBarButton = makeBarButton(
+		image: Theme.ImageIcon.menuButton,
+		action: #selector(menuButtonAction),
+		accessibilityIdentifier: AccessibilityIdentifier.FileList.menuBarButton.description
+	)
 	private var viewModel = FileEditorModel.ViewModel(title: "", fileData: NSMutableAttributedString())
 	private var editable: Bool
 	
 	private lazy var textViewEditor: UITextView = makeTextView()
+	private lazy var popover = PopoverViewController()
 
 	private var constraints = [NSLayoutConstraint]()
-	
+
+	private var cancellable: AnyCancellable?
+
 	// MARK: - Initialization
 	init(editable: Bool) {
 		self.editable = editable
@@ -48,6 +56,11 @@ final class FileEditorViewController: UIViewController {
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
 		layout()
+	}
+
+	override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+		super.viewWillTransition(to: size, with: coordinator)
+		popover.dismiss(animated: true)
 	}
 }
 
@@ -76,16 +89,46 @@ private extension FileEditorViewController {
 		}
 		textViewEditor.scrollRangeToVisible(textViewEditor.selectedRange)
 	}
+
+	@objc
+	func menuButtonAction(_ sender: UIBarItem) {
+		popover.modalPresentationStyle = .popover
+		cancellable = popover.performActionPublisher
+			.receive(on: RunLoop.main)
+			.compactMap { $0 }
+			.sink { [weak interactor, weak popover] action in
+				if case .exportToPDF = action {
+					popover?.dismiss(animated: true)
+					interactor?.performAction(request: .exportToPDF)
+				}
+			}
+		guard let presentingVC = popover.popoverPresentationController else { return }
+		presentingVC.delegate = self
+		presentingVC.sourceView = view
+		presentingVC.permittedArrowDirections = []
+		presentingVC.sourceRect = CGRect(
+			x: view.bounds.width - view.safeAreaInsets.right,
+			y: view.safeAreaInsets.top + Sizes.Padding.double,
+			width: 0,
+			height: 0
+		)
+
+		present(popover, animated: true)
+	}
 }
 
 // MARK: - UI setup
 private extension FileEditorViewController {
 	func setupUI() {
 		view.backgroundColor = Theme.backgroundColor
-		navigationItem.setHidesBackButton(false, animated: true)
-		navigationItem.largeTitleDisplayMode = .never
+
 		navigationController?.navigationBar.tintColor = Theme.mainColor
-		
+
+		navigationItem.setHidesBackButton(false, animated: true)
+		navigationItem.backButtonDisplayMode = .minimal
+		navigationItem.largeTitleDisplayMode = .never
+		navigationItem.rightBarButtonItem = menuBarButton
+
 		textViewEditor.attributedText = viewModel.fileData
 		
 		NotificationCenter.default.addObserver(
@@ -117,6 +160,24 @@ private extension FileEditorViewController {
 		
 		return textView
 	}
+
+	func makeBarButton(
+		image: UIImage?,
+		action: Selector?,
+		accessibilityIdentifier: String = ""
+	) -> UIBarButtonItem {
+		let barButtonItem = UIBarButtonItem(
+			image: image,
+			style: .plain,
+			target: self,
+			action: action
+		)
+		if !accessibilityIdentifier.isEmpty {
+			barButtonItem.accessibilityIdentifier = accessibilityIdentifier
+		}
+
+		return barButtonItem
+	}
 }
 
 // MARK: - Layout UI
@@ -146,5 +207,12 @@ extension FileEditorViewController: IFileEditorViewController {
 		self.viewModel = viewModel
 		title = viewModel.title
 		textViewEditor.attributedText = viewModel.fileData
+	}
+}
+
+// MARK: - UIPopoverPresentationControllerDelegate
+extension FileEditorViewController: UIPopoverPresentationControllerDelegate {
+	func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+		.none
 	}
 }

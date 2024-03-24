@@ -9,12 +9,16 @@
 import UIKit
 
 final class FileEditorAssembler {
-	func assembly(storage: IStorageService, file: FileSystemEntity, editable: Bool) -> FileEditorViewController {
+	func assembly(
+		storage: IStorageService,
+		file: FileSystemEntity,
+		editable: Bool
+	) -> (FileEditorViewController, FileEditorInteractor) {
 		let viewController = FileEditorViewController(editable: editable)
 		let presenter = FileEditorPresenter(viewController: viewController)
 		let interactor = FileEditorInteractor(presenter: presenter, storage: storage, file: file)
 		viewController.interactor = interactor
 		
-		return viewController
+		return (viewController, interactor)
 	}
 }

@@ -19,7 +19,7 @@ public final class Parser {
 			nodes.append(parseHeader(tokens: &tempTokens))
 			nodes.append(parseBlockquote(tokens: &tempTokens))
 			nodes.append(parseParagraph(tokens: &tempTokens))
-			nodes.append(parseLineBreak(tokens: &tempTokens))
+			nodes.append(parseEmptyLine(tokens: &tempTokens))
 			nodes.append(parseHorizontalLine(tokens: &tempTokens))
 			nodes.append(parseCodeBlock(tokens: &tempTokens))
 			nodes.append(parseBulletedList(tokens: &tempTokens))
@@ -47,7 +47,9 @@ private extension Parser {
 		
 		if case let .header(level, text) = token {
 			tokens.removeFirst()
-			return HeaderNode(level: level, children: parseText(text))
+			var children = parseText(text)
+			children.append(LineBreakNode())
+			return HeaderNode(level: level, children: children)
 		}
 
 		return nil
@@ -58,7 +60,9 @@ private extension Parser {
 		
 		if case let .blockQuote(level, text) = token {
 			tokens.removeFirst()
-			return BlockquoteNode(level: level, children: parseText(text))
+			var children = parseText(text)
+			children.append(LineBreakNode())
+			return BlockquoteNode(level: level, children: children)
 		}
 
 		return nil
@@ -73,6 +77,7 @@ private extension Parser {
 			if case let .textLine(text) = token {
 				tokens.removeFirst()
 				textNodes.append(contentsOf: parseText(text))
+				textNodes.append(LineBreakNode())
 			} else {
 				break
 			}
@@ -85,12 +90,12 @@ private extension Parser {
 		return nil
 	}
 
-	func parseLineBreak(tokens: inout [Token]) -> LineBreakNode? {
+	func parseEmptyLine(tokens: inout [Token]) -> EmptyLineNode? {
 		guard let token = tokens.first else { return nil }
 		
-		if case .lineBreak = token {
+		if case .emptyLine = token {
 			tokens.removeFirst()
-			return LineBreakNode()
+			return EmptyLineNode()
 		}
 
 		return nil
@@ -125,7 +130,8 @@ private extension Parser {
 				}
 			} else if case let .codeLine(text: code) = token {
 				tokens.removeFirst()
-				inlineCodeItems.append(InlineCodeTextNode(code: code))
+				inlineCodeItems.append(CodeBlockItem(code: code))
+				inlineCodeItems.append(LineBreakNode())
 			} else {
 				break
 			}
@@ -150,6 +156,7 @@ private extension Parser {
 				tokens.removeFirst()
 				let node = BulletedListItem(marker: marker, children: parseText(text))
 				listItems.append(node)
+				listItems.append(LineBreakNode())
 				if startBlock {
 					levelNode = level
 					startBlock = false
@@ -182,6 +189,7 @@ private extension Parser {
 					levelNode = level
 					startBlock = false
 				}
+				listItems.append(LineBreakNode())
 			} else {
 				break
 			}

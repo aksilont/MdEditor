@@ -51,7 +51,11 @@ final class StartScreenViewController: UIViewController, Accessible {
 
 	override func viewWillAppear(_ animated: Bool) {
 		super.viewWillAppear(animated)
-		interactor?.fetchData()
+
+		let landscape = UIDevice.current.orientation.isLandscape == true
+		interactor?.performAction(
+			request: .changeCountRecentFiles(landscape: landscape)
+		)
 	}
 
 	override func viewDidLayoutSubviews() {
@@ -67,6 +71,11 @@ final class StartScreenViewController: UIViewController, Accessible {
 		
 		coordinator.animate { [weak self] _ in
 			self?.navigationController?.navigationBar.sizeToFit()
+			
+			let landscape = UIDevice.current.orientation.isLandscape == true
+			self?.interactor?.performAction(
+				request: .changeCountRecentFiles(landscape: landscape)
+			)
 		}
 	}
 
@@ -151,7 +160,7 @@ private extension StartScreenViewController {
 		navigationItem.setHidesBackButton(true, animated: true)
 		navigationItem.backButtonDisplayMode = .minimal
 		navigationController?.navigationBar.prefersLargeTitles = true
-		navigationItem.backButtonDisplayMode = .minimal
+
 		view.backgroundColor = Theme.backgroundColor
 
 		buttonNew.configuration?.imagePadding += Sizes.Padding.half
@@ -171,13 +180,13 @@ private extension StartScreenViewController {
 		let layout = UICollectionViewFlowLayout()
 		layout.scrollDirection = .horizontal
 		layout.minimumLineSpacing = Sizes.CollectionView.Padding.lineSpacing
+		layout.sectionInset = Sizes.CollectionView.sectionInset
 
 		let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
 		
 		collectionView.register(RecentDocumentCell.self, forCellWithReuseIdentifier: RecentDocumentCell.reuseIdentifier)
 		collectionView.accessibilityIdentifier = AccessibilityIdentifier.StartScreen.collectionView.description
-		
-		collectionView.isPagingEnabled = true
+
 		collectionView.showsHorizontalScrollIndicator = false
 		collectionView.backgroundColor = .clear
 
@@ -230,16 +239,20 @@ private extension StartScreenViewController {
 				constant: Sizes.Padding.normal
 			),
 			collectionViewDocs.leadingAnchor.constraint(
-				equalTo: view.safeAreaLayoutGuide.leadingAnchor,
-				constant: Sizes.Padding.normal
+				equalTo: view.safeAreaLayoutGuide.leadingAnchor
 			),
-			collectionViewDocs.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+			collectionViewDocs.trailingAnchor.constraint(
+				equalTo: view.safeAreaLayoutGuide.trailingAnchor
+			),
 
 			stackViewButttons.topAnchor.constraint(
 				equalTo: collectionViewDocs.bottomAnchor,
 				constant: Sizes.Padding.normal
 			),
-			stackViewButttons.leadingAnchor.constraint(equalTo: collectionViewDocs.leadingAnchor)
+			stackViewButttons.leadingAnchor.constraint(
+				equalTo: collectionViewDocs.leadingAnchor,
+				constant: Sizes.Padding.normal
+			)
 		]
 
 		narrowConstraints = [

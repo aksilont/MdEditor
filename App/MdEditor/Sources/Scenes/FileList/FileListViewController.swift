@@ -21,6 +21,11 @@ final class FileListViewController: UIViewController {
 
 	// MARK: - Private properties
 	private lazy var tableView: UITableView = makeTableView()
+	private lazy var homeBarButton = makeBarButton(
+		image: Theme.ImageIcon.homeButton,
+		action: #selector(homeButtonAction),
+		accessibilityIdentifier: AccessibilityIdentifier.FileList.homeBarButton.description
+	)
 	private var viewModel = FileListModel.ViewModel(title: "/", data: [])
 
 	// MARK: - Lifecycle
@@ -86,13 +91,33 @@ private extension FileListViewController {
 		return tableView
 	}
 
+	func makeBarButton(
+		image: UIImage?,
+		action: Selector?,
+		accessibilityIdentifier: String = ""
+	) -> UIBarButtonItem {
+		let barButtonItem = UIBarButtonItem(
+			image: image,
+			style: .plain,
+			target: self,
+			action: action
+		)
+		if !accessibilityIdentifier.isEmpty {
+			barButtonItem.accessibilityIdentifier = accessibilityIdentifier
+		}
+		return barButtonItem
+	}
+
 	/// Настройка UI экрана
 	func setupUI() {
 		view.backgroundColor = Theme.backgroundColor
+
+		navigationController?.navigationBar.tintColor = Theme.mainColor
+		
 		navigationItem.setHidesBackButton(false, animated: true)
 		navigationItem.backButtonDisplayMode = .minimal
 		navigationItem.largeTitleDisplayMode = .never
-		navigationController?.navigationBar.tintColor = Theme.mainColor
+		navigationItem.rightBarButtonItem = homeBarButton
 
 		tableView.dataSource = self
 		tableView.delegate = self
@@ -126,5 +151,13 @@ extension FileListViewController: IFileListViewController {
 		guard !viewModel.data.isEmpty else { return }
 		self.viewModel = viewModel
 		tableView.reloadData()
+	}
+}
+
+// MARK: - Actions
+private extension FileListViewController {
+	@objc
+	func homeButtonAction() {
+		interactor?.performAction(request: .goHome)
 	}
 }

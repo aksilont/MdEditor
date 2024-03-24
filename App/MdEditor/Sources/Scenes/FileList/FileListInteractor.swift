@@ -17,6 +17,8 @@ protocol IFileListDelegate: AnyObject {
 	/// Открыть выбранный файл.
 	/// - Parameter file: Ссылка на файл.
 	func openFile(file: FileSystemEntity)
+
+	func goHome()
 }
 
 protocol IFileListInteractor {
@@ -85,6 +87,8 @@ final class FileListInteractor: IFileListInteractor {
 			} else {
 				delegate?.openFile(file: selectedFile)
 			}
+		case .goHome:
+			delegate?.goHome()
 		}
 	}
 }

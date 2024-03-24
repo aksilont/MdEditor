@@ -1,0 +1,19 @@
+//
+//  DebugConfig.xcconfig
+//  MdEditor
+//
+//  Created by Aksilont on 12.03.2024.
+//  Copyright © 2024 EncodedTeam. All rights reserved.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+
+// Основая версия приложения
+// Изменить перед публикацией
+VERSION = 0.5.2
+
+// !!! Не менять !!!
+// Авто-инкремент номера сборки
+// Формат: ГГ.ММ.ДД.НомерСборки
+BUILD_NUMBER = 24.03.24.20

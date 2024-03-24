@@ -16,12 +16,6 @@ final class MainCoordinator: BaseCoordinator {
 
 	// MARK: - Internal methods
 	override func start() {
-#if DEBUG
-		if CommandLine.skipLogin {
-			runTodoListFlow()
-			return
-		}
-#endif
 		runLoginFlow()
 	}
 }
@@ -42,12 +36,6 @@ private extension MainCoordinator {
 
 	func runEditorFlow() {
 		let coordinator = EditorCoordinator(navigationController: navigationController)
-		addDependency(coordinator)
-		coordinator.start()
-	}
-
-	func runTodoListFlow() {
-		let coordinator = TodoListCoordinator(navigationController: navigationController)
 		addDependency(coordinator)
 		coordinator.start()
 	}

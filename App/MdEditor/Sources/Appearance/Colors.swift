@@ -15,7 +15,7 @@ enum Colors {
 	)
 	static let orange = UIColor.color(
 		light: Asset.WarmAndCold.Orange.tangerine.color,
-		dark: Asset.WarmAndCold.Orange.mustard.color
+		dark: Asset.WarmAndCold.Orange.peach.color
 	)
 	static let green = UIColor.color(
 		light: Asset.WarmAndCold.Green.arlekin.color,
@@ -36,6 +36,10 @@ enum Colors {
 	static let black = UIColor.color(
 		light: UIColor(hex: 0x000000),
 		dark: UIColor(hex: 0xFFFFFF)
+	)
+	static let smoke = UIColor.color(
+		light: Asset.WarmAndCold.Gray.smokeWhite.color,
+		dark: Asset.WarmAndCold.Gray.graphiteBlack.color
 	)
 	static let dark = UIColor.color(
 		light: Asset.WarmAndCold.Blue.fadedBlue.color,

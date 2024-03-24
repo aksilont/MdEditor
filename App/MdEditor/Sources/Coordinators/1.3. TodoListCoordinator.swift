@@ -30,7 +30,7 @@ final class TodoListCoordinator: ICoordinator {
 	private func buildTaskManager() -> ITaskManager {
 		let taskManager = TaskManager()
 		var repository: ITaskRepository
-		if CommandLine.isUITesting {
+		if LaunchArguments[.isUITesting] {
 			repository = TaskRepositoryStub()
 		} else {
 			repository = TaskRepositoryStub() // В реальной ситуации данные подгружаются из хранилища или сети

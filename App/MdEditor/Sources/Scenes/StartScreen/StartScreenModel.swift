@@ -16,6 +16,7 @@ enum StartScreenModel {
 		case showAbout
 		case recentFileSelected(indexPath: IndexPath)
 		case deleteRecentFile(indexPath: IndexPath)
+		case changeCountRecentFiles(landscape: Bool)
 	}
 
 	struct Response {

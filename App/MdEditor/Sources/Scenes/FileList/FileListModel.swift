@@ -11,6 +11,7 @@ import Foundation
 enum FileListModel {
 	enum Request {
 		case fileSelected(indexPath: IndexPath)
+		case goHome
 	}
 
 	struct Response {

@@ -9,6 +9,10 @@
 import Foundation
 
 enum FileEditorModel {
+	enum Request {
+		case exportToPDF
+	}
+
 	struct Response {
 		let title: String
 		let fileData: NSMutableAttributedString

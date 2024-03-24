@@ -7,16 +7,16 @@
       buildImplicitDependencies = "YES">
       <BuildActionEntries>
          <BuildActionEntry
-            buildForTesting = "YES"
+            buildForTesting = "NO"
             buildForRunning = "YES"
             buildForProfiling = "YES"
             buildForArchiving = "YES"
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "MarkdownPackage"
-               BuildableName = "MarkdownPackage"
-               BlueprintName = "MarkdownPackage"
+               BlueprintIdentifier = "NetworkLayerPackage"
+               BuildableName = "NetworkLayerPackage"
+               BlueprintName = "NetworkLayerPackage"
                ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
@@ -28,6 +28,18 @@
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES"
       shouldAutocreateTestPlan = "YES">
+      <Testables>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "NetworkLayerPackageTests"
+               BuildableName = "NetworkLayerPackageTests"
+               BlueprintName = "NetworkLayerPackageTests"
+               ReferencedContainer = "container:">
+            </BuildableReference>
+         </TestableReference>
+      </Testables>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"
@@ -49,9 +61,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "MarkdownPackage"
-            BuildableName = "MarkdownPackage"
-            BlueprintName = "MarkdownPackage"
+            BlueprintIdentifier = "NetworkLayerPackage"
+            BuildableName = "NetworkLayerPackage"
+            BlueprintName = "NetworkLayerPackage"
             ReferencedContainer = "container:">
          </BuildableReference>
       </MacroExpansion>

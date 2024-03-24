@@ -8,16 +8,21 @@
 
 import Foundation
 
-enum LaunchArguments {
-	static let isUItesting = "-isUITesting"
-	static let skipLogin = "-skipLogin"
-}
-
-extension CommandLine {
-	static var isUITesting: Bool {
-		return CommandLine.arguments.contains(LaunchArguments.isUItesting)
+struct LaunchArguments {
+	enum Arguments: String, CaseIterable {
+		case isUITesting = "-isUITesting"
+		case runTodoListFlow = "-runTodoListFlow"
+		case runEditorFlow = "-runEditorFlow"
 	}
-	static var skipLogin: Bool {
-		return CommandLine.arguments.contains(LaunchArguments.skipLogin)
+
+	// Создание списка параметров происходит один раз при обращении к структуре LaunchArguments
+	private static let parameters: [LaunchArguments.Arguments: Bool] = {
+		Arguments.allCases.reduce(into: [:]) { result, arg in
+			result[arg] = CommandLine.arguments.contains(arg.rawValue)
+		}
+	}()
+
+	static subscript(argument: LaunchArguments.Arguments) -> Bool {
+		parameters[argument] ?? false
 	}
 }
